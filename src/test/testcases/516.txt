@@ -1,0 +1,37 @@
+
+            type Person struct {
+                name string
+                age int
+            }    
+        
+            func change(str string) {
+                str := "Ha"
+            }
+
+            var a = Person{name: "Khiem"}
+            var ARR = [2]Person{Person{name: "Khiem", age: 21}, Person{name: "Bao", age: 20}}
+            
+            const d = 3
+            var arr [d]int = [3]int{1 + d - 6, 2 + 2, 3 * d * d}
+            var nullArr [2]float
+
+            func main() {
+                var s = "1"
+                putIntLn(a.age)
+                a := ARR[1]
+                change(s)
+                
+                for i := 0; i < 5; i += 1 {
+                    putIntLn(arr[i])
+                    if (i == 2) {
+                        break
+                    }
+                }
+
+                a.name := "Tan Lo Regulus"
+
+                putStringLn(a.name)
+
+                return
+            }
+        

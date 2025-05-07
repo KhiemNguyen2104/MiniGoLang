@@ -1,0 +1,11 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/main/minigo/checker",
+        "./src/test/Test",
+        "./src/test/Test",
+        "./src/main/minigo/utils",
+        "./src/main/minigo/codegen",
+        "./src/main/minigo/astgen",
+        "./src/main/minigo/parser"
+    ]
+}

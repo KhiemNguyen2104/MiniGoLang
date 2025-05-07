@@ -1,0 +1,14 @@
+
+            const x = 15;
+
+            func main() {
+                for var i int = 0; i < x; i += 2 {
+                    if (i == 52) {
+                        continue;
+                    }
+
+                    putIntLn(i);
+                }
+
+            }
+        

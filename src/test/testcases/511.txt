@@ -1,0 +1,53 @@
+
+            var a = !(-1.0 <= 4.2)
+            var test1 = (1 == 2 || 3 == 4) && (3.0 != 5.6)
+            var test2 = (1 > 2) || ("abc" == "abc")
+            
+            func One(flag boolean) int {
+                if (flag) {
+                    return 1;
+                }
+                return -1;
+            }
+            
+            func main() {
+                arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}
+                var i int = 0;
+                var j int = 0;
+                var flag boolean = false && !true;
+                /*
+                for i < 4 {
+                    for j < 4 {
+                        if (arr[i][j] > 5) {
+                            flag := true
+                            break
+                        }
+                    }
+                    i += 1;
+                    j := 0;
+                }
+                */
+                putIntLn(i + j);
+
+                const boo = !(One(true) < -17 + 16)
+
+                var check = One(false)
+
+                if (false && check == 1 && i + j != 0 || i != j) {
+                    const newVar = 1
+
+                    putBoolLn(boo)
+                    putBoolLn(a)
+                } else if (i == 0) {
+                    const newVar = 2
+
+                    putIntLn(i + 1)
+                    putIntLn(check + 1)
+                } else {
+                    var newVar = 3
+
+                    putBoolLn(test1)
+                    putBoolLn(test2)
+                }
+            }
+        
