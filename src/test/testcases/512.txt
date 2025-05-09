@@ -1,0 +1,23 @@
+
+            type Circle struct {
+                radius float
+            }
+            
+            var c Circle = Circle{radius: 5.12}
+
+            const Pi = 3.14;
+
+            func (c Circle) CirArea() float {
+                return c.radius * c.radius * Pi;
+            }
+
+            func (c Circle) CirPerimeter() float {
+                return c.radius * 2 * Pi;
+            }
+
+            func main() {
+                putFloatLn(Pi);
+
+                putFloatLn(c.CirArea())
+            }
+        

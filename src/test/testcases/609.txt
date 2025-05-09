@@ -1,0 +1,31 @@
+
+            type Person struct {
+                height float;
+                weight float
+            }
+            
+            var arr = [2][2]Person{
+                {Person{height: 17.0e-1, weight: 7.0E1}, Person{height: 148.0E-2, weight: 0.42e2}},
+                {Person{height: 16.1E-1, weight: 6700.0e-2}, Person{height: 1765.0E-3, weight: 90.0}}}
+            
+            func BMI(height, weight float) float {
+                return weight / (height * height)
+            }
+
+            func main() {
+                for i := 0; i <= 1; i += 1 {
+                    for var j = 0; j <= 1; j += 1 {
+                        bmi := BMI(arr[i][j].height, arr[i][j].weight);
+                        if (bmi < 18.5) {
+                            putStringLn("Underweight")
+                        } else if (18.5 <= bmi && bmi < 25.0) {
+                            putStringLn("Normal")
+                        } else if (25.0 <= bmi && bmi < 29.0) {
+                            putStringLn("Pre-obese")
+                        } else {
+                            putStringLn("Obese")
+                        }
+                    }
+                }
+            }
+        

@@ -1,0 +1,14 @@
+
+            const i = 1 + 1 + 1
+            const j = 2 * (-(-1))
+            var arr = [3][i][j]boolean{
+                        {{true, false}, {true, true}, {false, true}},
+                        {{false, false}, {true, false}, {true, true}},
+                        {{true, true}, {false, true}, {false, false}}}
+
+            func main() {
+                putBool(arr[1 + 1][2][0])
+
+                return
+            }
+        

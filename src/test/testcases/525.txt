@@ -1,0 +1,4 @@
+
+            var x = 1.2
+            func main () { x += 1 ; putStringLn("This is a string"); putFloat(x); return; };
+        

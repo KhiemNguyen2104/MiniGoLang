@@ -1,0 +1,14 @@
+
+            var last_name = "Khiem";
+            const d = 2
+            const ar = [d][1]int{{1}, {2}}
+            var first_name string = "Nguyen Phuc Gia";
+
+            func main() {
+                var arr [2][3]float = [d][3]int{{13, 2, 3}, {5, 8, 9}}
+                putStringLn(last_name + " " + first_name);
+                putFloatLn(arr[0][0])
+            }
+
+            var x = (1 + 1.0);
+        

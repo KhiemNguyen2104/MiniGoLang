@@ -1,0 +1,29 @@
+
+            const Pi = 314.0E-2
+            const E = 2
+
+            type Int struct {
+                num int
+            }
+
+            func (i Int) Exp() float {
+                return i.Pow(i.num, E)
+            }
+
+            func (i Int) Pow(n int, e int) float {
+                var j = 0
+                var prod float = 1.0;
+                for j < n {
+                    prod *= e
+                    j += 1
+                }
+
+                return prod
+            }
+
+            func main() {
+                var i = Int{num: 3};
+
+                putFloatLn(i.Exp())
+            }
+        

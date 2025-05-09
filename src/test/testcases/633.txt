@@ -1,0 +1,13 @@
+
+        func calculateArea(width float, height float) float {
+            var area float
+            area := width * height
+            return area
+        }
+
+        func main() {
+            var d float = calculateArea(1.0, 2.0E1)
+
+            putFloat(d)
+        }
+        

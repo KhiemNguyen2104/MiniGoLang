@@ -1,0 +1,41 @@
+
+        type Calculator struct {
+            value int
+        }
+        
+        type HumanAct interface {
+            eat(food string);
+            work(job string);
+        }
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        func (p Person) eat(food string) {
+            putStringLn("I am eating " + food)
+            return ;
+        }
+
+        func (p Person) work(job string) {
+            putStringLn("I am working " + job)
+            return ;
+        }
+
+        func (c Calculator) Add(x int) int {
+            c.value += x;
+            var p HumanAct = Person{name: "Khiem", age: 21};
+
+            p.work("Developer")
+            putIntLn(p.age);
+
+            return c.value;
+        }
+
+        func main() {
+            var c Calculator = Calculator{value: 10}
+
+            putInt(c.Add(1))
+        }
+        

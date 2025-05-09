@@ -1,0 +1,6 @@
+Check the rectangle 0
+Area: 200.0
+Check the rectangle 1
+Area: 5.0
+Check the rectangle 2
+Area: 12.0

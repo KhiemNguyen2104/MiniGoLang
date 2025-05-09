@@ -1,0 +1,10 @@
+
+            var arr = [2][2]int{{1, 2}, {3, 4}}
+            func main () {
+                a := 1
+                var b boolean = true
+                a := getInt()
+
+                putInt(a + arr[1][1])
+            }
+        

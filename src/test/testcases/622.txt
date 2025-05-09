@@ -1,0 +1,35 @@
+            
+            type Circle struct {
+                radius float
+            }
+
+            func foo(a, d int, b [2][2]string, c, e Circle) float {
+                putStringLn(b[0][1]);
+
+                b[1][1] := "Khiem"
+
+                rec_area := (a + d)*2;
+
+                var cir_area = e.radius*e.radius*3.14;
+
+                var c float = 1.0 * e.radius
+
+                e.radius := 1.2
+
+                return c;
+            }
+
+            func foo1() { return; }
+
+            func main() {
+                var arr = [2][2]string{{"a", "b"}, {"c", "d"}}
+
+                c := Circle{radius: 3.34}
+
+                putFloatLn(foo(1, 2, arr, c, c))
+                putStringLn(arr[1][1])
+                putFloat(c.radius)
+
+                return
+            }
+        

@@ -4,320 +4,331 @@ from AST import *
 
 
 class CheckCodeGenSuite(unittest.TestCase):
-#     def test_int_literal(self):
-#         input = """func main() {putInt(5);};"""
-#         expect = "5"
-#         self.assertTrue(TestCodeGen.test(input,expect,501))
+    def test_int_literal(self):
+        input = """func main() {putInt(5);};"""
+        expect = "5"
+        self.assertTrue(TestCodeGen.test(input,expect,501))
 
-#     def test_local_var(self):
-#         input = """func main() {var a int = 20;  putInt(a);};"""
-#         expect = "20"
-#         self.assertTrue(TestCodeGen.test(input,expect,502))
+    def test_local_var(self):
+        input = """func main() {var a int = 20;  putInt(a);};"""
+        expect = "20"
+        self.assertTrue(TestCodeGen.test(input,expect,502))
 
-#     def test_gllobal_var(self):
-#         input = """var a int = 10; func main() { putInt(a);};"""
-#         expect = "10"
-#         self.assertTrue(TestCodeGen.test(input,expect,503))
+    def test_gllobal_var(self):
+        input = """var a int = 10; func main() { putInt(a);};"""
+        expect = "10"
+        self.assertTrue(TestCodeGen.test(input,expect,503))
 
-#     def test_int_ast(self):
-#         input = Program([FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [IntLiteral(25)])]))])
-#         expect = "25"
-#         self.assertTrue(TestCodeGen.test(input,expect,504))
+    def test_int_ast(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [IntLiteral(25)])]))])
+        expect = "25"
+        self.assertTrue(TestCodeGen.test(input,expect,504))
 
-#     def test_local_var_ast(self):
-#         input = Program([FuncDecl("main",[],VoidType(),Block([VarDecl("a",IntType(),IntLiteral(500)),FuncCall("putInt", [Id("a")])]))])
-#         expect = "500"
-#         self.assertTrue(TestCodeGen.test(input,expect,505))
+    def test_local_var_ast(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([VarDecl("a",IntType(),IntLiteral(500)),FuncCall("putInt", [Id("a")])]))])
+        expect = "500"
+        self.assertTrue(TestCodeGen.test(input,expect,505))
     
-#     def test_global_var_ast(self):  
-#         input = Program([VarDecl("a",IntType(),IntLiteral(5000)),VarDecl("b", None, Id("a")),FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [Id("a")])]))])
-#         expect = "5000"
-#         self.assertTrue(TestCodeGen.test(input,expect,506))
+    def test_global_var_ast(self):  
+        input = Program([VarDecl("a",IntType(),IntLiteral(5000)),VarDecl("b", None, Id("a")),FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [Id("a")])]))])
+        expect = "5000"
+        self.assertTrue(TestCodeGen.test(input,expect,506))
     
-#     def test_int_literal_2(self):
-#         input = """
-#             var population int = 0O145701
-#             var GDP float = (1.425 + population) * 2 / 1
-#             var x int
-#             var str1 = "Hello, "
-#             var str2 = "World!"
-#             const str = str1 + str2
+    def test_int_literal_2(self):
+        input = """
+            var population int = 0O145701
+            var GDP float = (1.425 + population) * 2 / 1
+            var x int
+            var str1 = "Hello, "
+            var str2 = "World!"
+            const str = str1 + str2
 
-#             func avGDP(GDP float, poppy int) float {
-#                 return GDP/poppy;
-#             }
+            func avGDP(GDP float, poppy int) float {
+                return GDP/poppy;
+            }
 
-#             func main() {
-#                 var str3 = str + "1"
-#                 var i float
-#                 const gdp = avGDP(GDP, 2)
+            func main() {
+                var str3 = str + "1"
+                var i float
+                const gdp = avGDP(GDP, 2)
 
-#                 x := 15
+                x := 15
 
-#                 var boo = i >= 2.0
+                var boo = i >= 2.0
 
-#                 putBoolLn(boo)
-#                 putFloatLn(1.0);
-#                 putFloatLn(2.0);
-#                 putFloatLn(GDP)
-#                 putString(str)
-#                 putLn();
-#                 putStringLn(str3)
-#                 putFloatLn(gdp)
-#                 putInt(x)
+                putBoolLn(boo)
+                putFloatLn(1.0);
+                putFloatLn(2.0);
+                putFloatLn(GDP)
+                putString(str)
+                putLn();
+                putStringLn(str3)
+                putFloatLn(gdp)
+                putInt(x)
 
-#                 return
-#             }
-#         """
-#         expect = """false
-# 1.0
-# 2.0
-# 104324.85
-# Hello, World!
-# Hello, World!1
-# 52162.426
-# 15"""
-#         self.assertTrue(TestCodeGen.test(input,expect,507))
+                return
+            }
+        """
+        expect = """false
+1.0
+2.0
+104324.85
+Hello, World!
+Hello, World!1
+52162.426
+15"""
+        self.assertTrue(TestCodeGen.test(input,expect,507))
 
-#     def test_int_literal_3(self):
-#         input = """
-#             var d = 2
-#             var arr_2 [3]float = [3]float{1.0, 2.0 + 3.0, 3.3}
-#             var multiArr [4][2][3]int = [4][d][3]int{{{1, 2 + 1 - 1, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}, {{13, 14, 15}, {16, 17, 18}}, {{19, 20, 21}, {22, 23, 24}}}
-#             var x = "abc"
-#             const idx = 1 - -1 - One()
-#             var arr [3]int = [3]int{idx, 0X1AF, 0B11}
-#             const y = arr[1]
-#             const z = multiArr[1][1][2]
+    def test_int_literal_3(self):
+        input = """
+            var d = 2
+            var arr_2 [3]float = [3]float{1.0, 2.0 + 3.0, 3.3}
+            var multiArr [4][2][3]int = [4][d][3]int{{{1, 2 + 1 - 1, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}, {{13, 14, 15}, {16, 17, 18}}, {{19, 20, 21}, {22, 23, 24}}}
+            var x = "abc"
+            const idx = 1 - -1 - 1
+            var arr [3]int = [3]int{idx, 0X1AF, 0B11}
+            const y = arr[1]
+            const z = multiArr[1][1][2]
 
-#             func print(a string) {
-#                 putString(a)
-#             }
+            func print(a string) {
+                putString(a)
+            }
 
-#             func One() int {
-#                 return 1;
-#             }
+            func One() int {
+                return 1;
+            }
 
-#             func main() {
-#                 const b = [3]int{10, 11, 12}
-#                 const boo = !false
+            func main() {
+                const b = [3]int{10, 11, 12}
+                const boo = !false
                 
-#                 var ARR = [2][2]int{{1, 2}, {3, 4}}
+                var ARR = [2][2]int{{1, 2}, {3, 4}}
 
-#                 var idx int = 1;
-#                 var val int = 2 * 6;
-#                 var y = ARR[0][0]
-#                 ARR[0][1] := 9
-#                 arr[1] := 21
-#                 putIntLn(idx)
-#                 putStringLn(x)
-#                 putIntLn(y)
-#                 putIntLn(z)
-#                 putFloatLn(arr_2[1])
-#                 putIntLn(val)
-#                 putIntLn(arr[1])
-#                 putInt(ARR[0][1])
-#             }
-#         """
-#         expect = """1
-# abc
-# 1
-# 12
-# 5.0
-# 12
-# 21
-# 9"""
-#         self.assertTrue(TestCodeGen.test(input,expect,508))
+                var idx int = 1;
+                var val int = 2 * 6;
+                var y = ARR[0][0]
+                ARR[0][1] := 9
+                arr[1] := 21
+                putIntLn(idx)
+                putStringLn(x)
+                putIntLn(y)
+                putIntLn(z)
+                putFloatLn(arr_2[1])
+                putIntLn(val)
+                putIntLn(arr[1])
+                putInt(ARR[0][1])
+            }
+        """
+        expect = """1
+abc
+1
+12
+5.0
+12
+21
+9"""
+        self.assertTrue(TestCodeGen.test(input,expect,508))
 
-    # def test_int_literal_4(self):
-    #     input = """
-    #         type Shape interface {
-    #             Circum(a int) int;
-    #             Area() float;
-    #         }
+    def test_int_literal_4(self):
+        input = """
+            /*
+            type Shape interface {
+                Circum(a int) int;
+                Area() float;
+            }*/
 
-    #         type Rectangle struct {
-    #             length int;
-    #             width int;
-    #         }
+            type Rectangle struct {
+                length int;
+                width int;
+            }
 
-    #         func (r Rectangle) Circum(a int) int {
-    #             return (r.length + r.width) * 2;
-    #         }
+            func (r Rectangle) Circum(a int) int {
+                return (r.length + r.width) * 2;
+            }
 
-    #         func (r Rectangle) Area() float {
-    #             return r.length * r.width * 1.0
-    #         }
+            func (r Rectangle) Area() float {
+                return r.length * r.width * 1.0
+            }
 
-    #         func main() {
-    #             recs := [3]Rectangle{
-    #                 Rectangle{length: 0B1010, width: 20},
-    #                 Rectangle{length: 0b101, width: 0X1},
-    #                 Rectangle{length: 4, width: 3}}
+            func main() {
+                recs := [3]Rectangle{
+                    Rectangle{length: 0B1010, width: 20},
+                    Rectangle{length: 0b101, width: 0X1},
+                    Rectangle{length: 4, width: 3}}
 
-    #             var idx int;                    
+                var i int;                    
 
-    #             for idx, val := range recs {
-    #                 putString("Check the rectangle ")
-    #                 putIntLn(idx)
-    #                 var cir = val.Circum(1)
-    #                 if (cir > 5) {
-    #                     putString("Area: ")
-    #                     putFloatLn(val.Area())
-    #                 } else {
-    #                     putStringLn("It is so small!")
-    #                 }
-    #             }
-    #         }
-    #     """
-    #     expect = f"Undeclared Identifier: val\n"
-    #     # print(expect)
-    #     self.assertTrue(TestCodeGen.test(input,expect, 408))
+                for i := 0; i < 3; i += 1 {
+                    putString("Check the rectangle ")
+                    putIntLn(i)
+                    var cir = recs[i].Circum(1)
+                    if (cir > 5) {
+                        putString("Area: ")
+                        putFloatLn(recs[i].Area())
+                    } else {
+                        putStringLn("It is so small!")
+                    }
+                }
+            }
+        """
+        expect = """Check the rectangle 0
+Area: 200.0
+Check the rectangle 1
+Area: 5.0
+Check the rectangle 2
+Area: 12.0
+"""
+        # print(expect)
+        self.assertTrue(TestCodeGen.test(input,expect, 509))
 
-#     def test_float_literal_1(self):
-#         input = """
-#             type Person struct {
-#                 height float;
-#                 weight float
-#             }
+    def test_float_literal_1(self):
+        input = """
+            type Person struct {
+                height float;
+                weight float
+            }
             
-#             var arr = [2][2]Person{
-#                 {Person{height: 17.0e-1, weight: 7.0E1}, Person{height: 148.0E-2, weight: 0.42e2}},
-#                 {Person{height: 16.1E-1, weight: 6700.0e-2}, Person{height: 1765.0E-3, weight: 90.0}}}
+            var arr = [2][2]Person{
+                {Person{height: 17.0e-1, weight: 7.0E1}, Person{height: 148.0E-2, weight: 0.42e2}},
+                {Person{height: 16.1E-1, weight: 6700.0e-2}, Person{height: 1765.0E-3, weight: 90.0}}}
             
-#             func BMI(height, weight float) float {
-#                 return weight / (height * height)
-#             }
+            func BMI(height, weight float) float {
+                return weight / (height * height)
+            }
 
-#             func main() {
-#                 for i := 0; i <= 1; i += 1 {
-#                     for var j = 0; j <= 1; j += 1 {
-#                         bmi := BMI(arr[i][j].height, arr[i][j].weight);
-#                         if (bmi < 18.5) {
-#                             putStringLn("Underweight")
-#                         } else if (18.5 <= bmi && bmi < 25.0) {
-#                             putStringLn("Normal")
-#                         } else if (25.0 <= bmi && bmi < 29.0) {
-#                             putStringLn("Pre-obese")
-#                         } else {
-#                             putStringLn("Obese")
-#                         }
-#                     }
-#                 }
-#             }
-#         """
-#         expect = """Normal
-# Normal
-# Pre-obese
-# Pre-obese
-# """
-#         self.assertTrue(TestCodeGen.test(input, expect, 510))
+            func main() {
+                for i := 0; i <= 1; i += 1 {
+                    for var j = 0; j <= 1; j += 1 {
+                        bmi := BMI(arr[i][j].height, arr[i][j].weight);
+                        if (bmi < 18.5) {
+                            putStringLn("Underweight")
+                        } else if (18.5 <= bmi && bmi < 25.0) {
+                            putStringLn("Normal")
+                        } else if (25.0 <= bmi && bmi < 29.0) {
+                            putStringLn("Pre-obese")
+                        } else {
+                            putStringLn("Obese")
+                        }
+                    }
+                }
+            }
+        """
+        expect = """Normal
+Normal
+Pre-obese
+Pre-obese
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 510))
 
-#     def test_var_decl_1(self):
-#         """Test wrong variable declarations with arrays"""
-#         input = """
-#             var a = !(-1.0 <= 4.2)
-#             var test1 = (1 == 2 || 3 == 4) && (3.0 != 5.6)
-#             var test2 = (1 > 2) || ("abc" == "abc")
+    def test_var_decl_1(self):
+        """Test wrong variable declarations with arrays"""
+        input = """
+            var a = !(-1.0 <= 4.2)
+            var test1 = (1 == 2 || 3 == 4) && (3.0 != 5.6)
+            var test2 = (1 > 2) || ("abc" == "abc")
             
-#             func One(flag boolean) int {
-#                 if (flag) {
-#                     return 1;
-#                 }
-#                 return -1;
-#             }
+            func One(flag boolean) int {
+                if (flag) {
+                    return 1;
+                }
+                return -1;
+            }
             
-#             func main() {
-#                 arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}
-#                 var i int = 0;
-#                 var j int = 0;
-#                 var flag boolean = false && !true;
-#                 /*
-#                 for i < 4 {
-#                     for j < 4 {
-#                         if (arr[i][j] > 5) {
-#                             flag := true
-#                             break
-#                         }
-#                     }
-#                     i += 1;
-#                     j := 0;
-#                 }
-#                 */
-#                 putIntLn(i + j);
+            func main() {
+                arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}
+                var i int = 0;
+                var j int = 0;
+                var flag boolean = false && !true;
+                /*
+                for i < 4 {
+                    for j < 4 {
+                        if (arr[i][j] > 5) {
+                            flag := true
+                            break
+                        }
+                    }
+                    i += 1;
+                    j := 0;
+                }
+                */
+                putIntLn(i + j);
 
-#                 const boo = !(One(true) < -17 + 16)
+                const boo = !(One(true) < -17 + 16)
 
-#                 var check = One(false)
+                var check = One(false)
 
-#                 if (false && check == 1 && i + j != 0 || i != j) {
-#                     const newVar = 1
+                if (false && check == 1 && i + j != 0 || i != j) {
+                    const newVar = 1
 
-#                     putBoolLn(boo)
-#                     putBoolLn(a)
-#                 } else if (i == 0) {
-#                     const newVar = 2
+                    putBoolLn(boo)
+                    putBoolLn(a)
+                } else if (i == 0) {
+                    const newVar = 2
 
-#                     putIntLn(i + 1)
-#                     putIntLn(check + 1)
-#                 } else {
-#                     var newVar = 3
+                    putIntLn(i + 1)
+                    putIntLn(check + 1)
+                } else {
+                    var newVar = 3
 
-#                     putBoolLn(test1)
-#                     putBoolLn(test2)
-#                 }
-#             }
-#         """
-#         expect = """0
-# 1
-# 0
-# """
-#         self.assertTrue(TestCodeGen.test(input, expect, 511))
+                    putBoolLn(test1)
+                    putBoolLn(test2)
+                }
+            }
+        """
+        expect = """0
+1
+0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 511))
 
-    # def test_var_decl_2(self):
-    #     """Test variable declarations with structs"""
-    #     input = """
-    #         type Circle struct {
-    #             radius float
-    #         }
+    def test_var_decl_2(self):
+        """Test variable declarations with structs"""
+        input = """
+            type Circle struct {
+                radius float
+            }
             
-    #         var c Circle = Circle{radius: 5.12}
+            var c Circle = Circle{radius: 5.12}
 
-    #         const Pi = 3.14;
+            const Pi = 3.14;
 
-    #         func (c Circle) CirArea() float {
-    #             return c.radius * c.radius * Pi;
-    #         }
+            func (c Circle) CirArea() float {
+                return c.radius * c.radius * Pi;
+            }
 
-    #         func main() {
-    #             putFloatLn(Pi);
+            func (c Circle) CirPerimeter() float {
+                return c.radius * 2 * Pi;
+            }
 
-    #             putFloatLn(c.CirArea())
-    #         }
+            func main() {
+                putFloatLn(Pi);
 
-    #         var c = 1
-    #     """
-    #     expect = f"Redeclared Variable: c\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 411))
+                putFloatLn(c.CirArea())
+            }
+        """
+        expect = """3.14
+82.31322
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 512))
 
-    # def test_var_decl_3(self):
-    #     """Test wrong variable declarations with structs"""
-    #     input = """
-    #         const i = 1 + 1 + 1
-    #         const j = 2 * (-(-1))
-    #         var arr = [3][i][j]boolean{
-    #                     {{true, false}, {true, true}, {false, true}},
-    #                     {{false, false}, {true, false}, {true, true}},
-    #                     {{true, true}, {false, true}, {false, false}}}
+    def test_var_decl_3(self):
+        """Test wrong variable declarations with structs"""
+        input = """
+            const i = 1 + 1 + 1
+            const j = 2 * (-(-1))
+            var arr = [3][i][j]boolean{
+                        {{true, false}, {true, true}, {false, true}},
+                        {{false, false}, {true, false}, {true, true}},
+                        {{true, true}, {false, true}, {false, false}}}
 
-    #         func main() {
-    #             putBool(arr[1 + 1][2][0])
+            func main() {
+                putBool(arr[1 + 1][2][0])
 
-    #             return
-    #         }
-    #     """
-    #     expect = """false"""
-    #     self.assertTrue(TestCodeGen.test(input, expect, 513))
+                return
+            }
+        """
+        expect = """false"""
+        self.assertTrue(TestCodeGen.test(input, expect, 513))
 
     def test_var_dec_4(self):
         """Test variable declarations with strings"""
@@ -340,465 +351,599 @@ class CheckCodeGenSuite(unittest.TestCase):
 """
         self.assertTrue(TestCodeGen.test(input, expect, 514))
 
-    # def test_const_decl(self):
-    #     """Test wrong variable declarations with strings"""
-    #     input = """
-    #         const Pi = 314.0E-2
-    #         const E = 0.2718e1
+    def test_const_decl(self):
+        """Test wrong variable declarations with strings"""
+        input = """
+            const Pi = 314.0E-2
+            const E = 2
 
-    #         type Int struct {
-    #             num int
-    #         }
+            type Int struct {
+                num int
+            }
 
-    #         func (i Int) Exp() float {
-    #             return i.Pow(i.num, E)
-    #         }
+            func (i Int) Exp() float {
+                return i.Pow(i.num, E)
+            }
 
-    #         func (i Int) Pow(n, e float) float {
-    #             var i = 0
-    #             var prod float = 1.0;
-    #             for i < n {
-    #                 prod *= e
-    #             }
+            func (i Int) Pow(n int, e int) float {
+                var j = 0
+                var prod float = 1.0;
+                for j < n {
+                    prod *= e
+                    j += 1
+                }
 
-    #             return prod
-    #         }
+                return prod
+            }
 
-    #         func main() {
-    #             var i = Int{num: 3};
+            func main() {
+                var i = Int{num: 3};
 
-    #             putFloatLn(i.Exp())
-    #         }
-    #     """
-    #     expect = f"Type Mismatch: {str(MethCall(Id('i'), 'Pow', [FieldAccess(Id('i'), 'num'), Id('E')]))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 414))
+                putFloatLn(i.Exp())
+            }
+        """
+        expect = """8.0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 515))
 
-#     def test_var_decl_5(self):
-#         input = """
-#             type Person struct {
-#                 name string
-#                 age int
-#             }    
+    def test_var_decl_5(self):
+        input = """
+            type Person struct {
+                name string
+                age int
+            }    
         
-#             func change(str string) {
-#                 str := "Ha"
-#             }
+            func change(str string) {
+                str := "Ha"
+            }
 
-#             var a = Person{name: "Khiem"}
-#             var ARR = [2]Person{Person{name: "Khiem", age: 21}, Person{name: "Bao", age: 20}}
+            var a = Person{name: "Khiem"}
+            var ARR = [2]Person{Person{name: "Khiem", age: 21}, Person{name: "Bao", age: 20}}
             
-#             const d = 3
-#             var arr [d]int = [3]int{1 + d - 6, 2 + 2, 3 * d * d}
-#             var nullArr [2]float
+            const d = 3
+            var arr [d]int = [3]int{1 + d - 6, 2 + 2, 3 * d * d}
+            var nullArr [2]float
 
-#             func main() {
-#                 var s = "1"
-#                 putIntLn(a.age)
-#                 a := ARR[1]
-#                 change(s)
+            func main() {
+                var s = "1"
+                putIntLn(a.age)
+                a := ARR[1]
+                change(s)
                 
-#                 for i := 0; i < 5; i += 1 {
-#                     putIntLn(arr[i])
-#                     if (i == 2) {
-#                         break
-#                     }
-#                 }
+                for i := 0; i < 5; i += 1 {
+                    putIntLn(arr[i])
+                    if (i == 2) {
+                        break
+                    }
+                }
 
-#                 a.name := "Tan Lo Regulus"
+                a.name := "Tan Lo Regulus"
 
-#                 putStringLn(a.name)
+                putStringLn(a.name)
 
-#                 return
-#             }
-#         """
-#         expect = """0
-# -2
-# 4
-# 27
-# Tan Lo Regulus
-# """
-#         self.assertTrue(TestCodeGen.test(input, expect, 516))
+                return
+            }
+        """
+        expect = """0
+-2
+4
+27
+Tan Lo Regulus
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 516))
 
-    # def test_struct_decl(self):
-    #     input = """
-    #         var names [3]string = [3]string{"Andres", "Brown", "Laura"}
+    def test_struct_decl(self):
+        input = """
+            var names [3]string = [3]string{"Andres", "Brown", "Laura"}
 
-    #         type Email struct {
-    #             name string
-    #         }
+            type Email struct {
+                name string
+            }
 
-    #         func (e Email) toString() string {
-    #             return e.name + "@Xmail.com"
-    #         }
+            func (e Email) toString() string {
+                return e.name + "@Xmail.com"
+            }
 
-    #         func main() {
-    #             for i := 0; i < 3; i += 1 {
-    #                 var e Email = Email{name: names[i]}
-    #                 putStringLn(e.toString())
-    #             }
-    #         }
+            func main() {
+                for i := 0; i < 3; i += 1 {
+                    var e Email = Email{name: names[i]}
+                    putStringLn(e.toString())
+                }
+            }
 
-    #         var arr [3]float = [3]float{1.0, 3.0, 4.0 + true}
-    #     """
-    #     expect = f"Type Mismatch: {str(BinaryOp('+', FloatLiteral(4.0), BooleanLiteral(True)))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 416))
+            var arr [3]float = [3]float{1.0, 3.0, 4.0}
+        """
+        expect = """Andres@Xmail.com
+Brown@Xmail.com
+Laura@Xmail.com
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 517))
 
-    # def test_assign_stmt_1(self):
-    #     input = """
+    def test_assign_stmt_1(self):
+        input = """
+            type a struct {
+                hello Hello
+            }
 
-    #         type a struct {
-    #             hello Hello
-    #         }
+            type Hello struct {
+                hi Hi
+            }
 
-    #         type Hello struct {
-    #             hi Hi
-    #         }
-
-    #         type Hi struct {
-    #             Goodbye [6][6][6][7]int
-    #         }
+            type Hi struct {
+                Goodbye [6]int
+            }
             
-    #         var x = [3][4]a{}
+            var x = [3]a{a{hello: Hello{hi: Hi{Goodbye: [6]int{1, 2, 3, 4, 5, 6}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{7, 8, 9, 10, 11, 12}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{13, 14, 15, 16, 17, 18}}}}}
 
-    #         func main() {    
-    #             x[2][3].hello.hi.Goodbye[3][4][5][6] := 120;
-                
-    #             putIntLn(x[2][3].hello.hi.Goodbye[3][4][5][6])
-    #         }
+            func main() {    
+                i := 0
+                for i < 3 {
+                    putString("Element ")
+                    putInt(i)
+                    putString(": ")
+                    putIntLn(x[i].hello.hi.Goodbye[0])
 
-    #         var d int = "1"
-    #     """
-    #     expect = f"Type Mismatch: {str(VarDecl('d', IntType(), StringLiteral('1')))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 417))
+                    i += 1
+                }
 
-#     def test_const_decl_2(self):
-#         input = """
-#             const Pi = 3.14
+                return
+            }
+        """
+        expect = """Element 0: 1
+Element 1: 7
+Element 2: 13
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 518))
 
-#             const Maxsize = (1 + 1.4E2)/34.3*(54 % 4);
+    def test_const_decl_2(self):
+        input = """
+            const Pi = 3.14
 
-#             func main() {
-#                 putFloat(Maxsize)
-#             }
-#         """
-#         expect = """8.221575"""
-#         self.assertTrue(TestCodeGen.test(input, expect, 519))
+            const Maxsize = (1 + 1.4E2)/34.3*(54 % 4);
 
-#     def test_continue(self):
-#         input = """
-#             const x = 15;
+            func main() {
+                putFloat(Maxsize)
+            }
+        """
+        expect = """8.221575"""
+        self.assertTrue(TestCodeGen.test(input, expect, 519))
 
-#             func main() {
-#                 for var i int = 0; i < x; i += 2 {
-#                     if (i == 52) {
-#                         continue;
-#                     }
+    def test_continue(self):
+        input = """
+            const x = 15;
 
-#                     putIntLn(i);
-#                 }
+            func main() {
+                for var i int = 0; i < x; i += 2 {
+                    if (i == 52) {
+                        continue;
+                    }
 
-#             }
-#         """
-#         expect = """0
-# 2
-# 4
-# 6
-# 8
-# 10
-# 12
-# 14
-# """
-#         self.assertTrue(TestCodeGen.test(input, expect, 520))
+                    putIntLn(i);
+                }
 
-    # def test_func_decl_1(self):
-    #     input = """            
-    #         type Circle struct {
-    #             radius float
-    #         }
-            
-    #         func foo(a, d int, b [5][6]string, c, e Circle) float {
-    #             putStringLn(b[3][1]);
+            }
+        """
+        expect = """0
+2
+4
+6
+8
+10
+12
+14
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 520))
 
-    #             rec_area := (a + d)*2;
+    def test_func_decl_1(self):
+        input = """            
+            type Circle struct {
+                radius float
+            }
 
-    #             var cir_area = e.radius*e.radius*3.14;
+            func foo(a, d int, b [2][2]string, c, e Circle) float {
+                putStringLn(b[0][1]);
 
-    #             var c float = 1.0 * c.radius
+                rec_area := (a + d)*2;
 
-    #             return c;
-    #         }
+                var cir_area = e.radius*e.radius*3.14;
 
-    #         func foo1() { return; }
+                var c float = 1.0 * e.radius
 
-    #         func main() {
-    #             return foo1();
-    #         }
-    #     """
-    #     expect = f"Type Mismatch: {str(Return(FuncCall('foo1', [])))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 420))
+                e.radius := 1.2
 
-    # def test_bool_literal(self):
-    #     input = """            
-    #         var a = false
-    #         var b boolean = true
-    #         var c boolean
+                return c;
+            }
 
-    #         func main() {
-    #             c := !((a || (!b && (a == !false))) && ((b || a) == !(b && !a)) || !(a == b) && (!(!a || b) == (a && !b)))
+            func foo1() { return; }
 
-    #             putBoolLn(c)
-    #             putStringLn(c)
-    #         }
-    #     """
-    #     expect = f"Type Mismatch: {str(BinaryOp('==', Id('a'), UnaryOp('!', BooleanLiteral(False))))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 421))
+            func main() {
+                var arr = [2][2]string{{"a", "b"}, {"c", "d"}}
 
-    # def test_expression_1(self):
-    #     input = """            
-    #         type Circle struct {
-    #             radius float
-    #         }
-            
-    #         func foo(a, d int, b [5][6]string, c, e Circle) float {
-    #             putStringLn(b[3][1]);
-    #             var c float = 7.0 * c.radius
+                c := Circle{radius: 3.12}
 
-    #             rec_area := (a + d)*2;
+                putFloatLn(foo(1, 2, arr, c, c))
+                putFloat(c.radius)
 
-    #             var cir_area = e.radius*e.radius*3.14;
+                return
+            }
+        """
+        expect = """b
+3.12
+1.2"""
+        self.assertTrue(TestCodeGen.test(input, expect, 521))
 
-    #             return c + 1;
-    #         }
+    def test_bool_literal(self):
+        input = """            
+            var a = false
+            var b boolean = true
+            var c boolean
 
-    #         func foo1() { return 1; }
-    #     """
-    #     expect = f"Type Mismatch: {str(Return(IntLiteral(1)))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 422))
+            func main() {
+                c := !((a || (!b && (a && !false))) && ((b || a) || !(b && !a)) || !(a || b) && (!(!a || b) && (a && !b)))
 
-    # def test321(self):
-    #     input = """func main () int { x := 1 ; return "a"; };"""
-    #     expect = f"Type Mismatch: {str(Return(StringLiteral('a')))}\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,423))
+                putBool(c)
+            }
+        """
+        expect = """true"""
+        self.assertTrue(TestCodeGen.test(input, expect, 522))
 
-    # def test322(self):
-    #     input = """func main (a int, b float) { x += 1 ; return; };"""
-    #     expect = f"Undeclared Identifier: x\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,424))
+    def test_expression_1(self):
+        input = """            
+            type Circle struct {
+                radius float
+            }
 
-    # def test323(self):
-    #     input = """
-    #     type Calculator struct {
-    #         value int
-    #     }
+            func foo(a, d int, b [2][2]string, c, e Circle) float {
+                putStringLn(b[0][1]);
+
+                b[1][1] := "Khiem"
+
+                rec_area := (a + d)*2;
+
+                var cir_area = e.radius*e.radius*3.14;
+
+                var c float = 1.0 * e.radius
+
+                e.radius := 1.2
+
+                return c;
+            }
+
+            func foo1() { return; }
+
+            func main() {
+                var arr = [2][2]string{{"a", "b"}, {"c", "d"}}
+
+                c := Circle{radius: 3.34}
+
+                putFloatLn(foo(1, 2, arr, c, c))
+                putStringLn(arr[1][1])
+                putFloat(c.radius)
+
+                return
+            }
+        """
+        expect = """b
+3.34
+Khiem
+1.2"""
+        self.assertTrue(TestCodeGen.test(input, expect, 523))
+
+    def test321(self):
+        input = """func main () { x := 1 ; putInt(x); return ; };"""
+        expect = """1"""
+        self.assertTrue(TestCodeGen.test(input,expect,524))
+
+    def test322(self):
+        input = """
+            var x = 1.2
+            func main () { x += 1 ; putStringLn("This is a string"); putFloat(x); return; };
+        """
+        expect = """This is a string
+2.2"""
+        self.assertTrue(TestCodeGen.test(input,expect,525))
+
+    def test323(self):
+        input = """
+        type Calculator struct {
+            value int
+        }
         
-    #     type HumanAct interface {
-    #         eat(food string);
-    #         work(job string);
-    #     }
+        type HumanAct interface {
+            eat(food string);
+            work(job string);
+        }
 
-    #     type Person struct {
-    #         name string
-    #         age int
-    #     }
+        type Person struct {
+            name string
+            age int
+        }
 
-    #     func (p Person) eat(food string) {
-    #         putStringLn("I am eating " + food)
-    #         return ;
-    #     }
+        func (p Person) eat(food string) {
+            putStringLn("I am eating " + food)
+            return ;
+        }
 
-    #     func (p Person) work(job string) {
-    #         putStringLn("I am working " + job)
-    #         return ;
-    #     }
+        func (p Person) work(job string) {
+            putStringLn("I am working " + job)
+            return ;
+        }
 
-    #     func (c Calculator) Add(x int) int {
-    #         c.value += x;
-    #         var p HumanAct = Person{name: "Khiem", age: 21};
+        func (c Calculator) Add(x int) int {
+            c.value += x;
+            var p HumanAct = Person{name: "Khiem", age: 21};
 
-    #         p.work("Developer")
-    #         putIntLn(p.age);
+            p.work("Developer")
+            putIntLn(p.age);
 
-    #         return c.value;
-    #     }
-    #     """
-    #     expect = f"Type Mismatch: {str(FieldAccess(Id('p'), 'age'))}\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,425))
+            return c.value;
+        }
 
-    # def test324(self):
-    #     input = """
-    #     type A struct {
-    #         a int
-    #     }
+        func main() {
+            var c Calculator = Calculator{value: 10}
 
-    #     func (a A) b(c, d int) int {
-    #         return c + d
-    #     }
+            putInt(c.Add(1))
+        }
+        """
+        expect = """I am working Developer
+21
+11"""
+        self.assertTrue(TestCodeGen.test(input,expect,526))
+
+    def test324(self):
+        input = """
+        type A struct {
+            a int
+        }
+
+        func (a A) b(c, d int) int {
+            return c + d
+        }
         
-    #     func main () { 
-    #         var a A = A{a: 4}
-    #         var d = a.b(1+1, 3)
-    #         a.b(1+1, 3)
-    #     };
-    #     """
-    #     expect = f"Type Mismatch: {str(MethCall(Id('a'), 'b', [BinaryOp('+', IntLiteral(1), IntLiteral(1)), IntLiteral(3)]))}\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,426))
+        func main () { 
+            var a A = A{a: 4}
+            var d = a.b(1+1, 3)
 
-    # def test325(self):
-    #     input = """
-    #         type Cache struct {
-    #             data [100]string;
-    #             timestamp [100]int;
-    #             size int;
-    #             capacity int;
-    #         }
+            putInt(d)
+        };
+        """
+        expect = """5"""
+        self.assertTrue(TestCodeGen.test(input,expect,527))
+
+    def test325(self):
+        input = """
+            type Cache struct {
+                data [3]string;
+                timestamp [3]int;
+                size int;
+                capacity int;
+            }
             
-    #         func (c Cache) get(key int) string {
-    #             if (key >= 0 && key < c.size && c.timestamp[key] > 0) {
-    #                 c.timestamp[key] := getCurrentTime()
-    #                 return c.data[key]
-    #             }
-    #             return ""
-    #         }
+            func (c Cache) get(key int) string {
+                if (key >= 0 && key < c.size && c.timestamp[key] > 0) {
+                    c.timestamp[key] := getCurrentTime()
+                    return c.data[key]
+                }
+                return ""
+            }
             
-    #         func (c Cache) put(key int, value string) {
-    #             if (key >= 0 && key < c.capacity) {
-    #                 c.data[key] := value
-    #                 c.timestamp[key] := getCurrentTime()
-    #                 if (key >= c.size) {
-    #                     c.size := key + 1
-    #                 }
-    #                 return 
-    #             }
-    #             return 
-    #         }
-    #         func (c Cache) clear() {
-    #             for i := 0; i < c.capacity; i += 1 {
-    #                 c.data[i] := ""
-    #                 c.timestamp[i] := 0
-    #             }
-    #             c.size := 0
-    #         }
-    #         func getCurrentTime() int {
-    #             return 0
-    #         }
-    #         func main() {
-    #             var c Cache
-    #             c := Cache{size: 0, capacity: 100}
-    #             c.put(1, "value1")
-    #             c.put(2, "value2")
-    #             putStringLn(c.get(1))
-    #             putStringLn(c.get(2))
-    #         }
+            func (c Cache) put(key int, value string) {
+                if (key >= 0 && key < c.capacity) {
+                    c.data[key] := value
+                    c.timestamp[key] := getCurrentTime()
+                    if (key >= c.size) {
+                        c.size := key + 1
+                    }
+                    return 
+                }
+                return 
+            }
 
-    #         var loi string = -1
-    #     """
-    #     expect = f"Type Mismatch: {str(VarDecl('loi', StringType(), UnaryOp('-', IntLiteral(1))))}\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,427))
+            func (c Cache) clear() {
+                for i := 0; i < c.capacity; i += 1 {
+                    c.data[i] := ""
+                    c.timestamp[i] := 0
+                }
+                c.size := 0
+            }
 
-    # def test326(self):
-    #     """Simple variable declaration"""
-    #     input = """var x int = 5;"""
-    #     expect = f""
-    #     self.assertTrue(TestCodeGen.test(input, expect, 428))
+            func getCurrentTime() int {
+                return 12
+            }
 
-    # def test327(self):
-    #     """Variable declaration without initialization"""
-    #     input = """var counter int;"""
-    #     expect = """"""
-    #     self.assertTrue(TestCodeGen.test(input, expect, 429))
+            func main() {
+                var c Cache
+                c := Cache{size: 0, capacity: 100}
+                c.data := [3]string{"1", "2", "3"}
+                c.timestamp := [3]int{-1, -1, -1}
 
-    # def test328(self):
-    #     """Multiple variable declarations"""
-    #     input = """
-    #     var a int = 10
-    #     var b float = 3.14
-    #     var c string = "hello"
+                c.put(1, "value1")
+                c.put(2, "value2")
+                putStringLn(c.get(1))
+                putStringLn(c.get(2))
+            }
+        """
+        expect = """value1
+value2
+"""
+        self.assertTrue(TestCodeGen.test(input,expect,528))
 
-    #     func combine(a int, b float, c string) string {
-    #         return a + b + c
-    #     }
-    #     """
-    #     expect = f"Type Mismatch: {str(BinaryOp('+', BinaryOp('+', Id('a'), Id('b')), Id('c')))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 430))
+    def test326(self):
+        """Simple variable declaration"""
+        input = """var x int = 5; func main() { return; };"""
+        expect = """"""
+        self.assertTrue(TestCodeGen.test(input, expect, 529))
 
-    # def test329(self):
-    #     """Simple function declaration"""
-    #     input = """
-    #     func greet() {
-    #         println("Hello, world!")
-    #     }
-    #     """
-    #     expect = f"Undeclared Function: println\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 431))
+    def test327(self):
+        """Variable declaration without initialization"""
+        input = """var counter int; func main() {putFloat(1.0 + counter); return; };"""
+        expect = """1.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 530))
 
-    # def test330(self):
-    #     """Function with parameters and return type"""
-    #     input = """
-    #     func add(a int, b int) int {
-    #         return a + b
-    #     }
+    def test328(self):
+        """Multiple variable declarations"""
+        input = """
+        var a int = 10
+        var d float = 3
+        var b int = 3
+        var c string = "hello"
 
-    #     var c = 1
+        func toString(n int) string {
+            if (n == 0) {
+                return "0"
+            } else if (n == 1) {
+                return "1"
+            } else if (n == 2) {
+                return "2"
+            } else if (n == 3) {
+                return "3"
+            } else if (n == 4) {
+                return "4"
+            } else if (n == 5) {
+                return "5"
+            } else if (n == 6) {
+                return "6"
+            } else if (n == 7) {
+                return "7"
+            } else if (n == 8) {
+                return "8"
+            } else if (n == 9) {
+                return "9"
+            }
+            
+            return ""
+        }
 
-    #     var arr = [c][1]int{{1}}
-    #     """
-    #     expect = f"Type Mismatch: {str(ArrayLiteral([Id('c'), IntLiteral(1)], IntType(), [[IntLiteral(1)]]))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 432))
+        func combine(a int, b int, c string) string {
+            return toString(a) + toString(b) + c
+        }
 
-    # def test331(self):
-    #     """Function with multiple statements"""
-    #     input = """
-    #     func calculateArea(width float, height float) float {
-    #         var area float
-    #         area := width * height
-    #         return area
-    #     }
+        func main() {
+            putString(combine(a, b, c))
+            putFloat(d)
 
-    #     func main() {
-    #         var d float = calculateArea(1.0, 2.0E14)
+            return
+        }
+        """
+        expect = """3hello3.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 531))
 
-    #         putFloatLn(d)
-    #         putLn()
-    #         putInt(1.0)
-    #     }
-    #     """
-    #     expect = f"Type Mismatch: {str(FuncCall('putInt', [FloatLiteral(1.0)]))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 433))
+    def test329(self):
+        """Simple function declaration"""
+        input = """
+        func greet() {
+            putStringLn("Hello, world!")
+        }
 
-    # def test332(self):
-    #     """Simple if statement"""
-    #     input = """
-    #     func testIfStatement(x int) {
-    #         if (x > 10) {
-    #             putStringLn("x is greater than 10")
-    #         }
-    #     }
+        func main() {
+            greet()
+        }
+        """
+        expect = """Hello, world!
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 532))
 
-    #     var d = 10
+    def test330(self):
+        """Function with parameters and return type"""
+        input = """
+        func add(a int, b int) int {
+            return a + b
+        }
 
-    #     var a = 1 + testIfStatement(d)
-    #     """
-    #     expect = f"Type Mismatch: {str(FuncCall('testIfStatement', [Id('d')]))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 434))
+        const c = 1
 
-    # def test333(self):
-    #     """If-else statement"""
-    #     input = """
-    #     func checkEvenOdd(num int) {
-    #         if (num % 2 == 0) {
-    #             putStringLn("Even number")
-    #         } else {
-    #             putStringLn("Odd number")
-    #         }
-    #     }
+        var arr = [c][1]int{{1}}
 
-    #     type Person struct {
-    #         name string
-    #         name int
-    #     }
-    #     """
-    #     expect = f"Redeclared Field: name\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 435))
+        func main() {
+            putInt(add(arr[0][0], 12))
+        }
+        """
+        expect = """13"""
+        self.assertTrue(TestCodeGen.test(input, expect, 533))
+
+    def test331(self):
+        """Function with multiple statements"""
+        input = """
+        func calculateArea(width float, height float) float {
+            var area float
+            area := width * height
+            return area
+        }
+
+        func main() {
+            var d float = calculateArea(1.0, 2.0E1)
+
+            putFloat(d)
+        }
+        """
+        expect = """20.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 534))
+
+    def test332(self):
+        """Simple if statement"""
+        input = """
+        func testIfStatement(x int) {
+            if (x > 10) {
+                putStringLn("x is greater than 10")
+            } else {
+                putStringLn("x is smaller than or equal to 10")
+            }
+        }
+
+        func Three() int { return 3; }
+
+        var d = 10
+
+        var a = 1 + Three()
+
+        func main() {
+            var arr [3]int = [3]int{4, 7, 11}
+
+            for i := 0; i < Three(); i += 2 {
+                testIfStatement(arr[i])
+            }
+
+            putInt(a)
+        }
+        """
+        expect = """x is smaller than or equal to 10
+x is greater than 10
+4"""
+        self.assertTrue(TestCodeGen.test(input, expect, 535))
+
+    def test333(self):
+        """If-else statement"""
+        input = """
+        func checkEvenOdd(num int) {
+            if (num % 2 == 0) {
+                putStringLn("Even number")
+            } else {
+                putStringLn("Odd number")
+            }
+        }
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        var people = [3]Person{Person{name: "Khiem", age: 21},
+                               Person{name: "Bao", age: 21},
+                               Person{name: "Anh", age: 23}}
+
+        func main() {
+            for var i = 0; i < 3; i += 1 {
+                checkEvenOdd(people[i].age)
+            }
+        }
+        """
+        expect = """Odd number
+Odd number
+Odd number
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 536))
 
     # def test334(self):
     #     """If-else if-else statement"""
@@ -1693,33 +1838,52 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = """"""
     #     self.assertTrue(TestCodeGen.test(input, expect, 481))
 
-    # def test379(self):
-    #     """Testing complex nested if-else statements"""
-    #     input = """
-    #     func println(a int) {
-    #         return ;
-    #     }
+    def test379(self):
+        """Testing complex nested if-else statements"""
+        input = """
+        func println(a int) {
+            putIntLn(a)
+            return ;
+        }
         
-    #     func nestedConditions(a int, b int, c int) {
-    #         if (a > b) {
-    #             if (a > c) {
-    #                 println(a)
-    #             } else {
-    #                 if (b > c) {
-    #                     println(b)
-    #                 } else {
-    #                     println(c)
-    #                 }
-    #             }
-    #         } else if (b > c || 1) {
-    #             println(b)
-    #         } else {
-    #             println(c)
-    #         }
-    #     }
-    #     """
-    #     expect = f"Type Mismatch: {str(BinaryOp('||', BinaryOp('>', Id('b'), Id('c')), IntLiteral(1)))}\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 482))
+        func nestedConditions(a int, b int, c int) {
+            if (a > b) {
+                if (a > c) {
+                    println(a)
+                } else {
+                    if (b > c) {
+                        println(b)
+                    } else {
+                        println(c)
+                    }
+                }
+            } else if (b > c) {
+                println(b)
+            } else {
+                println(c)
+            }
+        }
+
+        var c = 1
+
+        func print() {
+            putIntLn(c)
+        }
+
+        func main () {
+            var a = 23
+            var b = 21
+            var c = 33
+
+            print()
+
+            nestedConditions(a, b, c)
+        }
+        """
+        expect = """1
+33
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 583))
 
     # def test380(self):
     #     """Testing complex for loop with break and continue"""
@@ -1758,80 +1922,89 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = f"Type Mismatch: {str(Return(Id('sum')))}\n"
     #     self.assertTrue(TestCodeGen.test(input, expect, 484))
 
-    # def test385(self):
-    #     input = """
-    #     func main() {
-    #         x := 5
+    def test385(self):
+        input = """
+        var arr [5]float
+
+        func main() {
+            x := 5
             
-    #         // Using expression in an array index
-    #         arr := [5]int{10, 20, 30, 40, 50}
-    #         value := arr[1 + 2 * (x - 3) / 4]
+            // Using expression in an array index
+            arr := [5]int{10, 20, 30, 40, 50}
+            value := arr[1 + 2 * (x - 3) / 4]
             
-    #         // Using function call in an array index
-    #         value2 := arr[getIndex()]
-    #     }
-    #     """
-    #     expect = f"Undeclared Function: getIndex\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 485))
+            putFloat(value)
+        }
+        """
+        expect = """30.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 586))
 
-    # def test_486(self):
-    #     input = """var a int; var b int; var a int; """
-    #     expect = "Redeclared Variable: a\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,486))
+    def test_486(self):
+        input = """var a int; var b int; func main() { putInt(a + b); }; """
+        expect = "0"
+        self.assertTrue(TestCodeGen.test(input,expect,587))
 
-    # def test_487(self):
-    #     input = """var a int = 1.2;"""
-    #     expect = "Type Mismatch: VarDecl(a,IntType,FloatLiteral(1.2))\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,487))
+    def test_487(self):
+        input = """var a int = 1; func main() { putBool(true && false); };"""
+        expect = "false"
+        self.assertTrue(TestCodeGen.test(input,expect,588))
 
-    # def test_488r(self):
-    #     input = Program([VarDecl("a",IntType(),Id("b"))])
-    #     expect = "Undeclared Identifier: b\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,488))
+    def test_488r(self):
+        input = """func main() { return; };"""
+        expect = ""
+        self.assertTrue(TestCodeGen.test(input,expect,589))
   
-    # def test_489(self):
-    #     """Simple program: void main() {} """
-    #     input = """
-    #         var arr = [2][2]int{{1, 2}, {3, 4}}
-    #         func main () {
-    #             a := 1
-    #             var b boolean = true
-    #         };
-    #         var x int ;
-    #         const c = 3
-    #         var h = [c]int{1, 2.0}
+    def test_489(self):
+        """Simple program: void main() {} """
+        input = """
+            var arr = [2][2]int{{1, 2}, {3, 4}}
+            func main () {
+                a := 1
+                var b boolean = true
+                a := getInt()
+
+                putInt(a + arr[1][1])
+            }
+        """
+        expect = """12"""
+        self.assertTrue(TestCodeGen.test(input,expect,590))
+
+    def test_490(self):
+        """More complex program"""
+        input = """
+            type Person struct {
+                birth_year int
+            }
             
-    #     """
-    #     expect = """Type Mismatch: ArrayLiteral([Id(c)],IntType,[IntLiteral(1),FloatLiteral(2.0)])\n"""
-    #     self.assertTrue(TestCodeGen.test(input,expect,489))
+            func foo () {
+                x := (3*7 + 2 - (-1))/8 + 5 % 4;
+                if (x < 10) {
+                    putIntLn(x);
+                } else if (x < 0) {
+                    x += 1;
+                    putInt(x);
+                } else {
+                    putIntLn(10)
+                }
+            }
 
-    # def test_490(self):
-    #     """More complex program"""
-    #     input = """
-    #         type Person struct {
-    #             birth_year int
-    #         }
-            
-    #         func foo () {
-    #             x := (3*7 + 2 - (-1))/10 + 5 % 4;
-    #             if (x < 10) {
-    #                 putIntLn(x);
-    #             } else if (x < 0) {
-    #                 x += 1;
-    #                 putInt(x);
-    #             } else {
-    #                 putIntLn(10)
-    #             }
-    #         }
+            func (p Person) cal_age(current_year int) int {
+                return -(p.birth_year - current_year);
+            }
 
-    #         func (p Person) cal_age(current_year int) int {
-    #             return p.birth_year - current_year;
-    #         }
+            func main() {
+                p := Person{birth_year: 2004}
 
-    #         var x int = "34" + "hello"
-    #     """
-    #     expect = f"Type Mismatch: {str(VarDecl('x', IntType(), BinaryOp('+', StringLiteral('34'), StringLiteral('hello'))))}\n"
-    #     self.assertTrue(TestCodeGen.test(input,expect,490))
+                putIntLn(p.cal_age(2025))
+                foo()
+
+                return
+            }
+        """
+        expect = """21
+4
+"""
+        self.assertTrue(TestCodeGen.test(input,expect,591))
     
     # def test_491(self):
     #     input = """
@@ -1980,52 +2153,52 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = f"Type Mismatch: {str(FuncCall('putStringLn', [IntLiteral(1)]))}\n"
     #     self.assertTrue(TestCodeGen.test(input, expect, 495))
 
-#     def test_496(self):
-#         """Test wrong variable declarations with arrays"""
-#         input = """
-#             func One() int {
-#                 return 1;
-#             }
+    def test_496(self):
+        """Test wrong variable declarations with arrays"""
+        input = """
+            func One() int {
+                return 1;
+            }
             
-#             const b = 1 == 4
-#             const t = 1
-#             const d = 3 + t - -1*2 - 3
-#             var arr = [2][d]int{{7, 2, 3}, {4, 5, 6}}
+            const b = 1 == 4
+            const t = 1
+            const d = 3 + t - -1*2 - 3
+            var arr = [2][d]int{{7, 2, 3}, {4, 5, 6}}
             
-#             func main() {
-#                 var i int = 0;
-#                 var j int = 0;
-#                 var flag boolean = false;
+            func main() {
+                var i int = 0;
+                var j int = 0;
+                var flag boolean = false;
 
-#                 const k = [2]int{1 + 1, 3}
-#                 const l = k[0]
-#                 var subArr = [l]int{5, 5}
+                const k = [2]int{1 + 1, 3}
+                const l = k[0]
+                var subArr = [l]int{5, 5}
 
-#                 for i < 2 {
-#                     for j < 2 {
-#                         if (arr[i][j] > 5) {
-#                             flag := true
-#                             j += 1
-#                             continue
-#                         }
-#                         putInt(i)
-#                         putString(" ")
-#                         putInt(j)
-#                         putLn()
-#                         j += 1
-#                     }
-#                     i += 1;
-#                     j := 0;
-#                 }
+                for i < 2 {
+                    for j < 2 {
+                        if (arr[i][j] > 5) {
+                            flag := true
+                            j += 1
+                            continue
+                        }
+                        putInt(i)
+                        putString(" ")
+                        putInt(j)
+                        putLn()
+                        j += 1
+                    }
+                    i += 1;
+                    j := 0;
+                }
 
-#                 return
-#             }
-#         """
-#         expect = """0 1
-# 1 0
-# 1 1
-# """
-#         self.assertTrue(TestCodeGen.test(input, expect, 597))
+                return
+            }
+        """
+        expect = """0 1
+1 0
+1 1
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 597))
 
     # def test_497(self):
     #     """Test variable declarations with structs"""
@@ -2146,3 +2319,1238 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     """
     #     expect = f"Undeclared Function: println\n"
     #     self.assertTrue(TestCodeGen.test(input, expect, 452))
+
+    def test_600(self):
+        input = """func main() {putInt(5);};"""
+        expect = "5"
+        self.assertTrue(TestCodeGen.test(input,expect,600))
+
+    def test_601(self):
+        input = """func main() {var a int = 20;  putInt(a);};"""
+        expect = "20"
+        self.assertTrue(TestCodeGen.test(input,expect,601))
+
+    def test_602(self):
+        input = """var a int = 10; func main() { putInt(a);};"""
+        expect = "10"
+        self.assertTrue(TestCodeGen.test(input,expect,602))
+
+    def test_603(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [IntLiteral(25)])]))])
+        expect = "25"
+        self.assertTrue(TestCodeGen.test(input,expect,603))
+
+    def test_604(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([VarDecl("a",IntType(),IntLiteral(500)),FuncCall("putInt", [Id("a")])]))])
+        expect = "500"
+        self.assertTrue(TestCodeGen.test(input,expect,604))
+    
+    def test_605(self):  
+        input = Program([VarDecl("a",IntType(),IntLiteral(5000)),VarDecl("b", None, Id("a")),FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [Id("a")])]))])
+        expect = "5000"
+        self.assertTrue(TestCodeGen.test(input,expect,605))
+    
+    def test_606(self):
+        input = """
+            var population int = 0O145701
+            var GDP float = (1.425 + population) * 2 / 1
+            var x int
+            var str1 = "Hello, "
+            var str2 = "World!"
+            const str = str1 + str2
+
+            func avGDP(GDP float, poppy int) float {
+                return GDP/poppy;
+            }
+
+            func main() {
+                var str3 = str + "1"
+                var i float
+                const gdp = avGDP(GDP, 2)
+
+                x := 15
+
+                var boo = i >= 2.0
+
+                putBoolLn(boo)
+                putFloatLn(1.0);
+                putFloatLn(2.0);
+                putFloatLn(GDP)
+                putString(str)
+                putLn();
+                putStringLn(str3)
+                putFloatLn(gdp)
+                putInt(x)
+
+                return
+            }
+        """
+        expect = """false
+1.0
+2.0
+104324.85
+Hello, World!
+Hello, World!1
+52162.426
+15"""
+        self.assertTrue(TestCodeGen.test(input,expect,606))
+
+    def test_607(self):
+        input = """
+            var d = 2
+            var arr_2 [3]float = [3]float{1.0, 2.0 + 3.0, 3.3}
+            var multiArr [4][2][3]int = [4][d][3]int{{{1, 2 + 1 - 1, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}, {{13, 14, 15}, {16, 17, 18}}, {{19, 20, 21}, {22, 23, 24}}}
+            var x = "abc"
+            const idx = 1 - -1 - 1
+            var arr [3]int = [3]int{idx, 0X1AF, 0B11}
+            const y = arr[1]
+            const z = multiArr[1][1][2]
+
+            func print(a string) {
+                putString(a)
+            }
+
+            func One() int {
+                return 1;
+            }
+
+            func main() {
+                const b = [3]int{10, 11, 12}
+                const boo = !false
+                
+                var ARR = [2][2]int{{1, 2}, {3, 4}}
+
+                var idx int = 1;
+                var val int = 2 * 6;
+                var y = ARR[0][0]
+                ARR[0][1] := 9
+                arr[1] := 21
+                putIntLn(idx)
+                putStringLn(x)
+                putIntLn(y)
+                putIntLn(z)
+                putFloatLn(arr_2[1])
+                putIntLn(val)
+                putIntLn(arr[1])
+                putInt(ARR[0][1])
+            }
+        """
+        expect = """1
+abc
+1
+12
+5.0
+12
+21
+9"""
+        self.assertTrue(TestCodeGen.test(input,expect,607))
+
+    def test_608(self):
+        input = """
+            /*
+            type Shape interface {
+                Circum(a int) int;
+                Area() float;
+            }*/
+
+            type Rectangle struct {
+                length int;
+                width int;
+            }
+
+            func (r Rectangle) Circum(a int) int {
+                return (r.length + r.width) * 2;
+            }
+
+            func (r Rectangle) Area() float {
+                return r.length * r.width * 1.0
+            }
+
+            func main() {
+                recs := [3]Rectangle{
+                    Rectangle{length: 0B1010, width: 20},
+                    Rectangle{length: 0b101, width: 0X1},
+                    Rectangle{length: 4, width: 3}}
+
+                var i int;                    
+
+                for i := 0; i < 3; i += 1 {
+                    putString("Check the rectangle ")
+                    putIntLn(i)
+                    var cir = recs[i].Circum(1)
+                    if (cir > 5) {
+                        putString("Area: ")
+                        putFloatLn(recs[i].Area())
+                    } else {
+                        putStringLn("It is so small!")
+                    }
+                }
+            }
+        """
+        expect = """Check the rectangle 0
+Area: 200.0
+Check the rectangle 1
+Area: 5.0
+Check the rectangle 2
+Area: 12.0
+"""
+        # print(expect)
+        self.assertTrue(TestCodeGen.test(input,expect, 608))
+
+    def test_609(self):
+        input = """
+            type Person struct {
+                height float;
+                weight float
+            }
+            
+            var arr = [2][2]Person{
+                {Person{height: 17.0e-1, weight: 7.0E1}, Person{height: 148.0E-2, weight: 0.42e2}},
+                {Person{height: 16.1E-1, weight: 6700.0e-2}, Person{height: 1765.0E-3, weight: 90.0}}}
+            
+            func BMI(height, weight float) float {
+                return weight / (height * height)
+            }
+
+            func main() {
+                for i := 0; i <= 1; i += 1 {
+                    for var j = 0; j <= 1; j += 1 {
+                        bmi := BMI(arr[i][j].height, arr[i][j].weight);
+                        if (bmi < 18.5) {
+                            putStringLn("Underweight")
+                        } else if (18.5 <= bmi && bmi < 25.0) {
+                            putStringLn("Normal")
+                        } else if (25.0 <= bmi && bmi < 29.0) {
+                            putStringLn("Pre-obese")
+                        } else {
+                            putStringLn("Obese")
+                        }
+                    }
+                }
+            }
+        """
+        expect = """Normal
+Normal
+Pre-obese
+Pre-obese
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 609))
+
+    def test_610(self):
+        """Test wrong variable declarations with arrays"""
+        input = """
+            var a = !(-1.0 <= 4.2)
+            var test1 = (1 == 2 || 3 == 4) && (3.0 != 5.6)
+            var test2 = (1 > 2) || ("abc" == "abc")
+            
+            func One(flag boolean) int {
+                if (flag) {
+                    return 1;
+                }
+                return -1;
+            }
+            
+            func main() {
+                arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}
+                var i int = 0;
+                var j int = 0;
+                var flag boolean = false && !true;
+                /*
+                for i < 4 {
+                    for j < 4 {
+                        if (arr[i][j] > 5) {
+                            flag := true
+                            break
+                        }
+                    }
+                    i += 1;
+                    j := 0;
+                }
+                */
+                putIntLn(i + j);
+
+                const boo = !(One(true) < -17 + 16)
+
+                var check = One(false)
+
+                if (false && check == 1 && i + j != 0 || i != j) {
+                    const newVar = 1
+
+                    putBoolLn(boo)
+                    putBoolLn(a)
+                } else if (i == 0) {
+                    const newVar = 2
+
+                    putIntLn(i + 1)
+                    putIntLn(check + 1)
+                } else {
+                    var newVar = 3
+
+                    putBoolLn(test1)
+                    putBoolLn(test2)
+                }
+            }
+        """
+        expect = """0
+1
+0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 610))
+
+    def test_611(self):
+        """Test variable declarations with structs"""
+        input = """
+            type Circle struct {
+                radius float
+            }
+            
+            var c Circle = Circle{radius: 5.12}
+
+            const Pi = 3.14;
+
+            func (c Circle) CirArea() float {
+                return c.radius * c.radius * Pi;
+            }
+
+            func (c Circle) CirPerimeter() float {
+                return c.radius * 2 * Pi;
+            }
+
+            func main() {
+                putFloatLn(Pi);
+
+                putFloatLn(c.CirArea())
+            }
+        """
+        expect = """3.14
+82.31322
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 611))
+
+    def test_612(self):
+        """Test wrong variable declarations with structs"""
+        input = """
+            const i = 1 + 1 + 1
+            const j = 2 * (-(-1))
+            var arr = [3][i][j]boolean{
+                        {{true, false}, {true, true}, {false, true}},
+                        {{false, false}, {true, false}, {true, true}},
+                        {{true, true}, {false, true}, {false, false}}}
+
+            func main() {
+                putBool(arr[1 + 1][2][0])
+
+                return
+            }
+        """
+        expect = """false"""
+        self.assertTrue(TestCodeGen.test(input, expect, 612))
+
+    def test_613(self):
+        """Test variable declarations with strings"""
+        input = """
+            var last_name = "Khiem";
+            const d = 2
+            const ar = [d][1]int{{1}, {2}}
+            var first_name string = "Nguyen Phuc Gia";
+
+            func main() {
+                var arr [2][3]float = [d][3]int{{13, 2, 3}, {5, 8, 9}}
+                putStringLn(last_name + " " + first_name);
+                putFloatLn(arr[0][0])
+            }
+
+            var x = (1 + 1.0);
+        """
+        expect = """Khiem Nguyen Phuc Gia
+13.0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 613))
+
+    def test_614(self):
+        """Test wrong variable declarations with strings"""
+        input = """
+            const Pi = 314.0E-2
+            const E = 2
+
+            type Int struct {
+                num int
+            }
+
+            func (i Int) Exp() float {
+                return i.Pow(i.num, E)
+            }
+
+            func (i Int) Pow(n int, e int) float {
+                var j = 0
+                var prod float = 1.0;
+                for j < n {
+                    prod *= e
+                    j += 1
+                }
+
+                return prod
+            }
+
+            func main() {
+                var i = Int{num: 3};
+
+                putFloatLn(i.Exp())
+            }
+        """
+        expect = """8.0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 614))
+
+    def test_615(self):
+        input = """
+            type Person struct {
+                name string
+                age int
+            }    
+        
+            func change(str string) {
+                str := "Ha"
+            }
+
+            var a = Person{name: "Khiem"}
+            var ARR = [2]Person{Person{name: "Khiem", age: 21}, Person{name: "Bao", age: 20}}
+            
+            const d = 3
+            var arr [d]int = [3]int{1 + d - 6, 2 + 2, 3 * d * d}
+            var nullArr [2]float
+
+            func main() {
+                var s = "1"
+                putIntLn(a.age)
+                a := ARR[1]
+                change(s)
+                
+                for i := 0; i < 5; i += 1 {
+                    putIntLn(arr[i])
+                    if (i == 2) {
+                        break
+                    }
+                }
+
+                a.name := "Tan Lo Regulus"
+
+                putStringLn(a.name)
+
+                return
+            }
+        """
+        expect = """0
+-2
+4
+27
+Tan Lo Regulus
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 615))
+
+    def test_616l(self):
+        input = """
+            var names [3]string = [3]string{"Andres", "Brown", "Laura"}
+
+            type Email struct {
+                name string
+            }
+
+            func (e Email) toString() string {
+                return e.name + "@Xmail.com"
+            }
+
+            func main() {
+                for i := 0; i < 3; i += 1 {
+                    var e Email = Email{name: names[i]}
+                    putStringLn(e.toString())
+                }
+            }
+
+            var arr [3]float = [3]float{1.0, 3.0, 4.0}
+        """
+        expect = """Andres@Xmail.com
+Brown@Xmail.com
+Laura@Xmail.com
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 616))
+
+    def test_617(self):
+        input = """
+            type a struct {
+                hello Hello
+            }
+
+            type Hello struct {
+                hi Hi
+            }
+
+            type Hi struct {
+                Goodbye [6]int
+            }
+            
+            var x = [3]a{a{hello: Hello{hi: Hi{Goodbye: [6]int{1, 2, 3, 4, 5, 6}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{7, 8, 9, 10, 11, 12}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{13, 14, 15, 16, 17, 18}}}}}
+
+            func main() {    
+                i := 0
+                for i < 3 {
+                    putString("Element ")
+                    putInt(i)
+                    putString(": ")
+                    putIntLn(x[i].hello.hi.Goodbye[0])
+
+                    i += 1
+                }
+
+                return
+            }
+        """
+        expect = """Element 0: 1
+Element 1: 7
+Element 2: 13
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 617))
+
+    def test_618(self):
+        input = """
+            const Pi = 3.14
+
+            const Maxsize = (1 + 1.4E2)/34.3*(54 % 4);
+
+            func main() {
+                putFloat(Maxsize)
+            }
+        """
+        expect = """8.221575"""
+        self.assertTrue(TestCodeGen.test(input, expect, 618))
+
+    def test_619(self):
+        input = """
+            const x = 15;
+
+            func main() {
+                for var i int = 0; i < x; i += 2 {
+                    if (i == 52) {
+                        continue;
+                    }
+
+                    putIntLn(i);
+                }
+
+            }
+        """
+        expect = """0
+2
+4
+6
+8
+10
+12
+14
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 619))
+
+    def test_620(self):
+        input = """            
+            type Circle struct {
+                radius float
+            }
+
+            func foo(a, d int, b [2][2]string, c, e Circle) float {
+                putStringLn(b[0][1]);
+
+                rec_area := (a + d)*2;
+
+                var cir_area = e.radius*e.radius*3.14;
+
+                var c float = 1.0 * e.radius
+
+                e.radius := 1.2
+
+                return c;
+            }
+
+            func foo1() { return; }
+
+            func main() {
+                var arr = [2][2]string{{"a", "b"}, {"c", "d"}}
+
+                c := Circle{radius: 3.12}
+
+                putFloatLn(foo(1, 2, arr, c, c))
+                putFloat(c.radius)
+
+                return
+            }
+        """
+        expect = """b
+3.12
+1.2"""
+        self.assertTrue(TestCodeGen.test(input, expect, 620))
+
+    def test_621(self):
+        input = """            
+            var a = false
+            var b boolean = true
+            var c boolean
+
+            func main() {
+                c := !((a || (!b && (a && !false))) && ((b || a) || !(b && !a)) || !(a || b) && (!(!a || b) && (a && !b)))
+
+                putBool(c)
+            }
+        """
+        expect = """true"""
+        self.assertTrue(TestCodeGen.test(input, expect, 621))
+
+    def test_622(self):
+        input = """            
+            type Circle struct {
+                radius float
+            }
+
+            func foo(a, d int, b [2][2]string, c, e Circle) float {
+                putStringLn(b[0][1]);
+
+                b[1][1] := "Khiem"
+
+                rec_area := (a + d)*2;
+
+                var cir_area = e.radius*e.radius*3.14;
+
+                var c float = 1.0 * e.radius
+
+                e.radius := 1.2
+
+                return c;
+            }
+
+            func foo1() { return; }
+
+            func main() {
+                var arr = [2][2]string{{"a", "b"}, {"c", "d"}}
+
+                c := Circle{radius: 3.34}
+
+                putFloatLn(foo(1, 2, arr, c, c))
+                putStringLn(arr[1][1])
+                putFloat(c.radius)
+
+                return
+            }
+        """
+        expect = """b
+3.34
+Khiem
+1.2"""
+        self.assertTrue(TestCodeGen.test(input, expect, 622))
+
+    def test_623(self):
+        input = """func main () { x := 1 ; putInt(x); return ; };"""
+        expect = """1"""
+        self.assertTrue(TestCodeGen.test(input,expect,623))
+
+    def test_624(self):
+        input = """
+            var x = 1.2
+            func main () { x += 1 ; putStringLn("This is a string"); putFloat(x); return; };
+        """
+        expect = """This is a string
+2.2"""
+        self.assertTrue(TestCodeGen.test(input,expect,624))
+
+    def test_625(self):
+        input = """
+        type Calculator struct {
+            value int
+        }
+        
+        type HumanAct interface {
+            eat(food string);
+            work(job string);
+        }
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        func (p Person) eat(food string) {
+            putStringLn("I am eating " + food)
+            return ;
+        }
+
+        func (p Person) work(job string) {
+            putStringLn("I am working " + job)
+            return ;
+        }
+
+        func (c Calculator) Add(x int) int {
+            c.value += x;
+            var p HumanAct = Person{name: "Khiem", age: 21};
+
+            p.work("Developer")
+            putIntLn(p.age);
+
+            return c.value;
+        }
+
+        func main() {
+            var c Calculator = Calculator{value: 10}
+
+            putInt(c.Add(1))
+        }
+        """
+        expect = """I am working Developer
+21
+11"""
+        self.assertTrue(TestCodeGen.test(input,expect,625))
+
+    def test_626(self):
+        input = """
+        type A struct {
+            a int
+        }
+
+        func (a A) b(c, d int) int {
+            return c + d
+        }
+        
+        func main () { 
+            var a A = A{a: 4}
+            var d = a.b(1+1, 3)
+
+            putInt(d)
+        };
+        """
+        expect = """5"""
+        self.assertTrue(TestCodeGen.test(input,expect,626))
+
+    def test_627(self):
+        input = """
+            type Cache struct {
+                data [3]string;
+                timestamp [3]int;
+                size int;
+                capacity int;
+            }
+            
+            func (c Cache) get(key int) string {
+                if (key >= 0 && key < c.size && c.timestamp[key] > 0) {
+                    c.timestamp[key] := getCurrentTime()
+                    return c.data[key]
+                }
+                return ""
+            }
+            
+            func (c Cache) put(key int, value string) {
+                if (key >= 0 && key < c.capacity) {
+                    c.data[key] := value
+                    c.timestamp[key] := getCurrentTime()
+                    if (key >= c.size) {
+                        c.size := key + 1
+                    }
+                    return 
+                }
+                return 
+            }
+
+            func (c Cache) clear() {
+                for i := 0; i < c.capacity; i += 1 {
+                    c.data[i] := ""
+                    c.timestamp[i] := 0
+                }
+                c.size := 0
+            }
+
+            func getCurrentTime() int {
+                return 12
+            }
+
+            func main() {
+                var c Cache
+                c := Cache{size: 0, capacity: 100}
+                c.data := [3]string{"1", "2", "3"}
+                c.timestamp := [3]int{-1, -1, -1}
+
+                c.put(1, "value1")
+                c.put(2, "value2")
+                putStringLn(c.get(1))
+                putStringLn(c.get(2))
+            }
+        """
+        expect = """value1
+value2
+"""
+        self.assertTrue(TestCodeGen.test(input,expect,627))
+
+    def test_628(self):
+        """Simple variable declaration"""
+        input = """var x int = 5; func main() { return; };"""
+        expect = """"""
+        self.assertTrue(TestCodeGen.test(input, expect, 628))
+
+    def test_629(self):
+        """Variable declaration without initialization"""
+        input = """var counter int; func main() {putFloat(1.0 + counter); return; };"""
+        expect = """1.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 629))
+
+    def test_630(self):
+        """Multiple variable declarations"""
+        input = """
+        var a int = 10
+        var d float = 3
+        var b int = 3
+        var c string = "hello"
+
+        func toString(n int) string {
+            if (n == 0) {
+                return "0"
+            } else if (n == 1) {
+                return "1"
+            } else if (n == 2) {
+                return "2"
+            } else if (n == 3) {
+                return "3"
+            } else if (n == 4) {
+                return "4"
+            } else if (n == 5) {
+                return "5"
+            } else if (n == 6) {
+                return "6"
+            } else if (n == 7) {
+                return "7"
+            } else if (n == 8) {
+                return "8"
+            } else if (n == 9) {
+                return "9"
+            }
+            
+            return ""
+        }
+
+        func combine(a int, b int, c string) string {
+            return toString(a) + toString(b) + c
+        }
+
+        func main() {
+            putString(combine(a, b, c))
+            putFloat(d)
+
+            return
+        }
+        """
+        expect = """3hello3.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 630))
+
+    def test_631(self):
+        """Simple function declaration"""
+        input = """
+        func greet() {
+            putStringLn("Hello, world!")
+        }
+
+        func main() {
+            greet()
+        }
+        """
+        expect = """Hello, world!
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 631))
+
+    def test_632(self):
+        """Function with parameters and return type"""
+        input = """
+        func add(a int, b int) int {
+            return a + b
+        }
+
+        const c = 1
+
+        var arr = [c][1]int{{1}}
+
+        func main() {
+            putInt(add(arr[0][0], 12))
+        }
+        """
+        expect = """13"""
+        self.assertTrue(TestCodeGen.test(input, expect, 632))
+
+    def test_633(self):
+        """Function with multiple statements"""
+        input = """
+        func calculateArea(width float, height float) float {
+            var area float
+            area := width * height
+            return area
+        }
+
+        func main() {
+            var d float = calculateArea(1.0, 2.0E1)
+
+            putFloat(d)
+        }
+        """
+        expect = """20.0"""
+        self.assertTrue(TestCodeGen.test(input, expect, 633))
+
+    def test_634(self):
+        """Simple if statement"""
+        input = """
+        func testIfStatement(x int) {
+            if (x > 10) {
+                putStringLn("x is greater than 10")
+            } else {
+                putStringLn("x is smaller than or equal to 10")
+            }
+        }
+
+        func Three() int { return 3; }
+
+        var d = 10
+
+        var a = 1 + Three()
+
+        func main() {
+            var arr [3]int = [3]int{4, 7, 11}
+
+            for i := 0; i < Three(); i += 2 {
+                testIfStatement(arr[i])
+            }
+
+            putInt(a)
+        }
+        """
+        expect = """x is smaller than or equal to 10
+x is greater than 10
+4"""
+        self.assertTrue(TestCodeGen.test(input, expect, 634))
+
+    def test_635(self):
+        input = """func main() {putInt(5);};"""
+        expect = "5"
+        self.assertTrue(TestCodeGen.test(input,expect,635))
+
+    def test_636(self):
+        input = """func main() {var a int = 20;  putInt(a);};"""
+        expect = "20"
+        self.assertTrue(TestCodeGen.test(input,expect,636))
+
+    def test_637(self):
+        input = """var a int = 10; func main() { putInt(a);};"""
+        expect = "10"
+        self.assertTrue(TestCodeGen.test(input,expect,637))
+
+    def test_638(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [IntLiteral(25)])]))])
+        expect = "25"
+        self.assertTrue(TestCodeGen.test(input,expect,638))
+
+    def test_639(self):
+        input = Program([FuncDecl("main",[],VoidType(),Block([VarDecl("a",IntType(),IntLiteral(500)),FuncCall("putInt", [Id("a")])]))])
+        expect = "500"
+        self.assertTrue(TestCodeGen.test(input,expect,639))
+    
+    def test_640(self):  
+        input = Program([VarDecl("a",IntType(),IntLiteral(5000)),VarDecl("b", None, Id("a")),FuncDecl("main",[],VoidType(),Block([FuncCall("putInt", [Id("a")])]))])
+        expect = "5000"
+        self.assertTrue(TestCodeGen.test(input,expect,640))
+    
+    def test_641(self):
+        input = """
+            var population int = 0O145701
+            var GDP float = (1.425 + population) * 2 / 1
+            var x int
+            var str1 = "Hello, "
+            var str2 = "World!"
+            const str = str1 + str2
+
+            func avGDP(GDP float, poppy int) float {
+                return GDP/poppy;
+            }
+
+            func main() {
+                var str3 = str + "1"
+                var i float
+                const gdp = avGDP(GDP, 2)
+
+                x := 15
+
+                var boo = i >= 2.0
+
+                putBoolLn(boo)
+                putFloatLn(1.0);
+                putFloatLn(2.0);
+                putFloatLn(GDP)
+                putString(str)
+                putLn();
+                putStringLn(str3)
+                putFloatLn(gdp)
+                putInt(x)
+
+                return
+            }
+        """
+        expect = """false
+1.0
+2.0
+104324.85
+Hello, World!
+Hello, World!1
+52162.426
+15"""
+        self.assertTrue(TestCodeGen.test(input,expect,641))
+
+    def test_642(self):
+        input = """
+            var d = 2
+            var arr_2 [3]float = [3]float{1.0, 2.0 + 3.0, 3.3}
+            var multiArr [4][2][3]int = [4][d][3]int{{{1, 2 + 1 - 1, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}, {{13, 14, 15}, {16, 17, 18}}, {{19, 20, 21}, {22, 23, 24}}}
+            var x = "abc"
+            const idx = 1 - -1 - 1
+            var arr [3]int = [3]int{idx, 0X1AF, 0B11}
+            const y = arr[1]
+            const z = multiArr[1][1][2]
+
+            func print(a string) {
+                putString(a)
+            }
+
+            func One() int {
+                return 1;
+            }
+
+            func main() {
+                const b = [3]int{10, 11, 12}
+                const boo = !false
+                
+                var ARR = [2][2]int{{1, 2}, {3, 4}}
+
+                var idx int = 1;
+                var val int = 2 * 6;
+                var y = ARR[0][0]
+                ARR[0][1] := 9
+                arr[1] := 21
+                putIntLn(idx)
+                putStringLn(x)
+                putIntLn(y)
+                putIntLn(z)
+                putFloatLn(arr_2[1])
+                putIntLn(val)
+                putIntLn(arr[1])
+                putInt(ARR[0][1])
+            }
+        """
+        expect = """1
+abc
+1
+12
+5.0
+12
+21
+9"""
+        self.assertTrue(TestCodeGen.test(input,expect,642))
+
+    def test_643(self):
+        input = """
+            /*
+            type Shape interface {
+                Circum(a int) int;
+                Area() float;
+            }*/
+
+            type Rectangle struct {
+                length int;
+                width int;
+            }
+
+            func (r Rectangle) Circum(a int) int {
+                return (r.length + r.width) * 2;
+            }
+
+            func (r Rectangle) Area() float {
+                return r.length * r.width * 1.0
+            }
+
+            func main() {
+                recs := [3]Rectangle{
+                    Rectangle{length: 0B1010, width: 20},
+                    Rectangle{length: 0b101, width: 0X1},
+                    Rectangle{length: 4, width: 3}}
+
+                var i int;                    
+
+                for i := 0; i < 3; i += 1 {
+                    putString("Check the rectangle ")
+                    putIntLn(i)
+                    var cir = recs[i].Circum(1)
+                    if (cir > 5) {
+                        putString("Area: ")
+                        putFloatLn(recs[i].Area())
+                    } else {
+                        putStringLn("It is so small!")
+                    }
+                }
+            }
+        """
+        expect = """Check the rectangle 0
+Area: 200.0
+Check the rectangle 1
+Area: 5.0
+Check the rectangle 2
+Area: 12.0
+"""
+        # print(expect)
+        self.assertTrue(TestCodeGen.test(input,expect, 643))
+
+    def test_644(self):
+        input = """
+            type Person struct {
+                height float;
+                weight float
+            }
+            
+            var arr = [2][2]Person{
+                {Person{height: 17.0e-1, weight: 7.0E1}, Person{height: 148.0E-2, weight: 0.42e2}},
+                {Person{height: 16.1E-1, weight: 6700.0e-2}, Person{height: 1765.0E-3, weight: 90.0}}}
+            
+            func BMI(height, weight float) float {
+                return weight / (height * height)
+            }
+
+            func main() {
+                for i := 0; i <= 1; i += 1 {
+                    for var j = 0; j <= 1; j += 1 {
+                        bmi := BMI(arr[i][j].height, arr[i][j].weight);
+                        if (bmi < 18.5) {
+                            putStringLn("Underweight")
+                        } else if (18.5 <= bmi && bmi < 25.0) {
+                            putStringLn("Normal")
+                        } else if (25.0 <= bmi && bmi < 29.0) {
+                            putStringLn("Pre-obese")
+                        } else {
+                            putStringLn("Obese")
+                        }
+                    }
+                }
+            }
+        """
+        expect = """Normal
+Normal
+Pre-obese
+Pre-obese
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 644))
+
+    def test_645(self):
+        """Test wrong variable declarations with arrays"""
+        input = """
+            var a = !(-1.0 <= 4.2)
+            var test1 = (1 == 2 || 3 == 4) && (3.0 != 5.6)
+            var test2 = (1 > 2) || ("abc" == "abc")
+            
+            func One(flag boolean) int {
+                if (flag) {
+                    return 1;
+                }
+                return -1;
+            }
+            
+            func main() {
+                arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}
+                var i int = 0;
+                var j int = 0;
+                var flag boolean = false && !true;
+                /*
+                for i < 4 {
+                    for j < 4 {
+                        if (arr[i][j] > 5) {
+                            flag := true
+                            break
+                        }
+                    }
+                    i += 1;
+                    j := 0;
+                }
+                */
+                putIntLn(i + j);
+
+                const boo = !(One(true) < -17 + 16)
+
+                var check = One(false)
+
+                if (false && check == 1 && i + j != 0 || i != j) {
+                    const newVar = 1
+
+                    putBoolLn(boo)
+                    putBoolLn(a)
+                } else if (i == 0) {
+                    const newVar = 2
+
+                    putIntLn(i + 1)
+                    putIntLn(check + 1)
+                } else {
+                    var newVar = 3
+
+                    putBoolLn(test1)
+                    putBoolLn(test2)
+                }
+            }
+        """
+        expect = """0
+1
+0
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 645))
+
+    def test_646(self):
+        """Test variable declarations with structs"""
+        input = """
+            type Circle struct {
+                radius float
+            }
+            
+            var c Circle = Circle{radius: 5.12}
+
+            const Pi = 3.14;
+
+            func (c Circle) CirArea() float {
+                return c.radius * c.radius * Pi;
+            }
+
+            func (c Circle) CirPerimeter() float {
+                return c.radius * 2 * Pi;
+            }
+
+            func main() {
+                putFloatLn(Pi);
+
+                putFloatLn(c.CirArea())
+            }
+        """
+        expect = """3.14
+82.31322
+"""
+        self.assertTrue(TestCodeGen.test(input, expect, 646))
+
+    def test_647(self):
+        """Test wrong variable declarations with structs"""
+        input = """
+            const i = 1 + 1 + 1
+            const j = 2 * (-(-1))
+            var arr = [3][i][j]boolean{
+                        {{true, false}, {true, true}, {false, true}},
+                        {{false, false}, {true, false}, {true, true}},
+                        {{true, true}, {false, true}, {false, false}}}
+
+            func main() {
+                putBool(arr[1 + 1][2][0])
+
+                return
+            }
+        """
+        expect = """false"""
+        self.assertTrue(TestCodeGen.test(input, expect, 647))

@@ -1,0 +1,11 @@
+            
+            var a = false
+            var b boolean = true
+            var c boolean
+
+            func main() {
+                c := !((a || (!b && (a && !false))) && ((b || a) || !(b && !a)) || !(a || b) && (!(!a || b) && (a && !b)))
+
+                putBool(c)
+            }
+        

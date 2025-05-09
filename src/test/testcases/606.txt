@@ -1,0 +1,34 @@
+
+            var population int = 0O145701
+            var GDP float = (1.425 + population) * 2 / 1
+            var x int
+            var str1 = "Hello, "
+            var str2 = "World!"
+            const str = str1 + str2
+
+            func avGDP(GDP float, poppy int) float {
+                return GDP/poppy;
+            }
+
+            func main() {
+                var str3 = str + "1"
+                var i float
+                const gdp = avGDP(GDP, 2)
+
+                x := 15
+
+                var boo = i >= 2.0
+
+                putBoolLn(boo)
+                putFloatLn(1.0);
+                putFloatLn(2.0);
+                putFloatLn(GDP)
+                putString(str)
+                putLn();
+                putStringLn(str3)
+                putFloatLn(gdp)
+                putInt(x)
+
+                return
+            }
+        

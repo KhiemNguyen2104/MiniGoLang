@@ -143,6 +143,8 @@ class CodeGenerator(BaseVisitor,Utils):
             #         if self.MatchType(l, c['env'][-1][i][0].mtype, c):
             #             return self.DefaultVal(c['env'][-1][i][0].mtype, c)
             return NilLiteral()
+        elif type(l) is ClassType:
+            return NilLiteral()
                     
             raise TypeError("Default value: No suitable StructType for " + str(l))
         
@@ -186,7 +188,7 @@ class CodeGenerator(BaseVisitor,Utils):
                 code = self.emit.emitPUSHNULL(o['frame'])
             else:
                 val, typ, code = self.visit(globVar[1], o)
-                if type(typ) is StructType or type(typ) is InterfaceType:
+                if type(typ) is StructType or type(typ) is InterfaceType or type(typ) is Id:
                     typ = ClassType(typ.name)
             if type(typ) is IntType and type(globVar[2]) is FloatType:
                 self.emit.printout(code)
@@ -333,7 +335,7 @@ class CodeGenerator(BaseVisitor,Utils):
                         return IntLiteral(lVal.value + rVal.value)
                     else:
                         return FloatLiteral(lVal.value + rVal.value)
-            elif expr.op in ['-', '*', '/']:
+            elif expr.op in ['-', '*', '/', '%']:
                 # if expr.op == '/' and rVal.value == 0:
                 #     if type(rVal) is IntLiteral:
                 #         rVal = IntLiteral(1)
@@ -373,6 +375,8 @@ class CodeGenerator(BaseVisitor,Utils):
                             return IntLiteral(lVal.value - rVal.value)
                         else:
                             return FloatLiteral(lVal.value - rVal.value)
+                elif expr.op == '%':
+                    return IntLiteral(int(lVal.value % rVal.value))
             elif expr.op in ['==', '!=', '<', '<=', '>', '>=']:
                 if expr.op == '==':
                     return BooleanLiteral(lVal.value == rVal.value)
@@ -476,17 +480,18 @@ class CodeGenerator(BaseVisitor,Utils):
                 env = o.copy()
                 env['isLeft'] = False
                 exprValue, exprType, exprCode = self.visit(ast.varInit, env)
-            if not exprValue:
+            # if exprValue is None:
                 # raise IllegalRuntimeException("No initial value for the static field")
-                exprValue = self.DefaultVal(ast.varType, o)
+                # exprValue = self.DefaultVal(ast.varType, o)
 
-            self.GlobVarTable.append((ast.varName, exprValue, ast.varType))
+            typ = ast.varType if ast.varType else exprType
 
-            typ = ast.varType if exprType is None or type(exprType) is VoidType else exprType 
-            val = exprValue if exprValue else self.DefaultVal(typ, o)
+            if type(typ) is Id:
+                sym = next(filter(lambda x: x[0].name == typ.name, o['env'][-1]), None)
+                typ = sym[1]
 
             if type(ast.varType) is FloatType and type(exprType) is IntType:
-                exprCode += self.emit.printout(self.emit.emitI2F(o['frame']))
+                # exprCode += self.emit.printout(self.emit.emitI2F(o['frame']))
                 typ = FloatType()
             elif type(typ) is InterfaceType and type(exprType) is StructType:
                 typ = exprType
@@ -494,8 +499,12 @@ class CodeGenerator(BaseVisitor,Utils):
                 # exprCode = self.convertArray(ast.varType, exprCode, o['frame'])
                 typ = ast.varType
 
-            if type(typ) is StructType or type(typ) is InterfaceType:
+            if type(typ) is StructType or type(typ) is InterfaceType or type(typ) is Id:
                 typ = ClassType(typ.name)
+
+            val = exprValue if exprValue else self.DefaultVal(typ, o)
+
+            self.GlobVarTable.append((ast.varName, val, typ))
 
             o['env'][0].insert(len(o['env'][0]) - 13 - self.VarConstIdx[self.VarConstGlobIdx], (Symbol(ast.varName, typ, CName(self.className)), val))
             self.VarConstGlobIdx += 1
@@ -508,8 +517,11 @@ class CodeGenerator(BaseVisitor,Utils):
                 o['isLeft'] = False
                 exprValue, exprType, exprCode = self.visit(ast.varInit, o)
             
-            typ = ast.varType if exprType is None or type(exprType) is VoidType else exprType 
-            val = exprValue if exprValue else self.DefaultVal(typ, o)
+            typ = ast.varType if ast.varType else exprType
+
+            if type(typ) is Id:
+                sym = next(filter(lambda x: x[0].name == typ.name, o['env'][-1]), None)
+                typ = sym[1]
 
             if type(ast.varType) is FloatType and type(exprType) is IntType:
                 exprCode += self.emit.printout(self.emit.emitI2F(o['frame']))
@@ -520,9 +532,11 @@ class CodeGenerator(BaseVisitor,Utils):
             elif type(typ) is InterfaceType and type(exprType) is StructType:
                 typ = exprType
 
-            if type(typ) is StructType or type(typ) is InterfaceType:
+            if type(typ) is StructType or type(typ) is InterfaceType or type(typ) is Id:
                 typ = ClassType(typ.name)
             
+            val = exprValue if exprValue else self.DefaultVal(typ, o)
+
             o['env'][0] = [(Symbol(ast.varName, typ, Index(index)), val)] + o['env'][0]
             self.emit.printout(self.emit.emitVAR(index, ast.varName, typ, frame.getStartLabel(), frame.getEndLabel(), frame))
 
@@ -531,7 +545,7 @@ class CodeGenerator(BaseVisitor,Utils):
 
                 self.emit.printout(self.emit.emitWRITEVAR(ast.varName, typ, index, frame))
             else:
-                self.visit(Assign(Id(ast.varName), self.DefaultVal(ast.varType, o)), o)
+                self.visit(Assign(Id(ast.varName), self.DefaultVal(typ, o)), o)
 
         return o
 
@@ -575,6 +589,10 @@ class CodeGenerator(BaseVisitor,Utils):
         index = o['frame'].getNewIndex()
         startLabel = o['frame'].getStartLabel()
         endLabel = o['frame'].getEndLabel()
+
+        if type(ast.parType) is Id:
+            ast.parType = ClassType(ast.parType.name)
+        
         o['env'][0] = [(Symbol(ast.parName, ast.parType, Index(index)), self.DefaultVal(ast.parType, o))] + o['env'][0]
         self.emit.printout(self.emit.emitVAR(index, ast.parName, ast.parType, startLabel, endLabel, o['frame']))
         # self.visit(Assign(Id(ast.parName), self.DefaultVal(ast.parType, o)), o)
@@ -582,12 +600,14 @@ class CodeGenerator(BaseVisitor,Utils):
         return o
    
     def visitFuncDecl(self, ast, o):
-        self.fetchEnv(ast, o)
-        
         if o['GlobScan']:
             mtype = None
             isMain = ast.name == 'main'
             
+            for i in range(len(ast.params)):
+                if type(ast.params[i].parType) is Id:
+                    ast.params[i].parType = ClassType(ast.params[i].parType.name)
+
             if isMain:
                 mtype = MType([ArrayType([None], StringType())], ast.retType)
             else:
@@ -600,6 +620,10 @@ class CodeGenerator(BaseVisitor,Utils):
             frame = Frame(ast.name, ast.retType)
             isMain = ast.name == 'main'
             mtype = None
+
+            for i in range(len(ast.params)):
+                if type(ast.params[i].parType) is Id:
+                    ast.params[i].parType = ClassType(ast.params[i].parType.name)
 
             if isMain:
                 mtype = MType([ArrayType([None], StringType())], ast.retType)
@@ -635,10 +659,59 @@ class CodeGenerator(BaseVisitor,Utils):
             return o
 
     def visitMethodDecl(self, ast, o):
-        return None
+        if o['GlobScan']:
+            sym = next(filter(lambda x: x[0].name == ast.recType.name, o['env'][-1]), None)[0]
+
+            sym.mtype.methods.append(ast)
+
+            return o
+        else:
+            sym = next(filter(lambda x: x[0].name == ast.recType.name, o['env'][-1]), None)[0]
+            name = self.path + "/" + sym.name + ".j"
+
+            emitter = next(filter(lambda x: x.filename == name, self.structEmitters), None)
+
+            func = ast.fun
+            frame = Frame(func.name, func.retType)
+            mtype = MType(list(map(lambda x: x.parType, func.params)), func.retType)
+
+            funcEnv = copy.deepcopy(o)
+            emitter.printout(emitter.emitMETHOD(func.name, mtype, False, frame))
+
+            frame.enterScope(True)
+
+            emitter.printout(emitter.emitLABEL(frame.getStartLabel(), frame))
+
+            funcEnv['frame'] = frame
+            funcEnv['env'] = [[]] + funcEnv['env']
+            
+            temp = copy.deepcopy(self.emit)
+
+            self.emit = emitter
+
+            index = funcEnv['frame'].getNewIndex()
+            self.emit.printout(self.emit.emitVAR(index, ast.receiver, ClassType(ast.recType.name), funcEnv['frame'].getStartLabel(), funcEnv['frame'].getEndLabel(), funcEnv['frame']))
+            funcEnv['env'][0] = [(Symbol(ast.receiver, ClassType(ast.recType.name), Index(index)), self.DefaultVal(sym.mtype, funcEnv))] + funcEnv['env'][0]
+            funcEnv['env'] = [[]] + funcEnv['env']
+            funcEnv = reduce(lambda acc, ele: self.visit(ele, acc), func.params, funcEnv)
+            funcEnv['env'] = [[]] + funcEnv['env']
+            funcEnv = reduce(lambda acc, ele: self.visit(ele, acc), func.body.member, funcEnv)
+
+            emitter.printout(emitter.emitLABEL(funcEnv['frame'].getEndLabel(), funcEnv['frame']))
+            
+            if type(func.retType) is VoidType:
+                emitter.printout(emitter.emitRETURN(func.retType, funcEnv['frame'])) 
+            emitter.printout(emitter.emitENDMETHOD(funcEnv['frame']))
+
+            frame.exitScope()
+
+            self.FuncGlobIdx += 1
+            self.emit = temp
+
+            return o
 
     def visitPrototype(self, ast, o):
-        return None
+        return ast
     
     def visitIntType(self, ast, o):
         return ast
@@ -660,7 +733,7 @@ class CodeGenerator(BaseVisitor,Utils):
     
     def visitStructType(self, ast, o):
         if o['GlobScan']:
-            o['env'][0] = [(Symbol(ast.name, ast, CName(self.className)), None)] + o['env'][0]
+            o['env'][0] = [(Symbol(ast.name, ast, CName(self.className)), ast)] + o['env'][0]
 
             return o
         else:
@@ -671,6 +744,9 @@ class CodeGenerator(BaseVisitor,Utils):
             frame = Frame("<init>", VoidType())
 
             for i in range(len(ast.elements)):
+                if type(ast.elements[i][1]) is Id:
+                    sym = next(filter(lambda x: x[0].name == ast.elements[i][1].name, o['env'][-1]), None)
+                    ast.elements[i] = (ast.elements[i][0], ClassType(ast.elements[i][1].name))
                 newEmitter.printout(newEmitter.emitATTRIBUTE(ast.elements[i][0], ast.elements[i][1], False, False))
 
             newEmitter.printout(newEmitter.emitMETHOD("<init>", MType([], VoidType()), False, frame))
@@ -691,7 +767,17 @@ class CodeGenerator(BaseVisitor,Utils):
 
 
     def visitInterfaceType(self, ast, o):
-        return None
+        if o['GlobScan']:
+            o['env'][0] = [(Symbol(ast.name, ast, CName(self.className)), ast)] + o['env'][0]
+
+            return o
+        else:
+            newEmitter = Emitter(self.path + "/" + ast.name + ".j")
+            self.structEmitters.append(newEmitter)
+
+            newEmitter.printout(newEmitter.emitPROLOG(ast.name, "java.lang.Object"))
+
+            return o
     
     def visitBlock(self, ast, o):
         pass
@@ -708,7 +794,9 @@ class CodeGenerator(BaseVisitor,Utils):
                 sym = next(filter(lambda x: x is not None, [self.lookup(ast.lhs.name, env) for env in o['env']]), None)
 
                 if sym is None:
-                    self.visit(VarDecl(ast.lhs.name, None, ast.rhs), env)
+                    # print("TYPE: ", rType)
+                    
+                    o = self.visit(VarDecl(ast.lhs.name, None, ast.rhs), o)
                     return o
                 else:
                     env['isLeft'] = True
@@ -717,6 +805,14 @@ class CodeGenerator(BaseVisitor,Utils):
 
                     if type(lType) is FloatType and type(rType) is IntType:
                         rCode += self.emit.emitI2F(env['frame'])
+                    elif type(lType) is InterfaceType and type(rType) is StructType:
+                        sym = next(filter(lambda x: x[0].name == ast.lhs.name, env['env'][-1]), None)
+                        t = next(filter(lambda x: x[0].name == rType.name, env['env'][-1]), None)
+                        
+                        sym[0].mtype = t[0].mtype
+                        lType = rType
+                    elif type(lType) is ArrayType and type(rType) is ArrayType and type(lType.eleType) is FloatType and type(rType.eleType) is IntType:
+                        rCode = self.convertArray(lType, rCode, env)
 
                     res += rCode + lCode
             elif type(ast.lhs) is ArrayCell:
@@ -736,7 +832,7 @@ class CodeGenerator(BaseVisitor,Utils):
                     if i != len(arrayCell.idx) - 1:
                         res += self.emit.emitALOAD(arrType, env['frame'])
                     else:
-                        if type(rType) is FloatType and type(arrType.eleType) is IntType:
+                        if type(rType) is IntType and type(arrType.eleType) is FloatType:
                             rCode += self.emit.emitI2F(env['frame'])
 
                         res += rCode + self.emit.emitASTORE(arrType.eleType, env['frame'])
@@ -752,8 +848,17 @@ class CodeGenerator(BaseVisitor,Utils):
                     sym = next(filter(lambda x: x[0].name == reiType.name, env['env'][-1]), None)
                     typ = next(filter(lambda x: x[0] == ast.lhs.field, sym[0].mtype.elements), None)[1]
 
-                if type(rType) is FloatType and type(typ) is IntType:
+                if type(Type) is IntType and type(typ) is FloatType:
                     rCode += self.emit.emitI2F(env['frame'])
+                # elif type(lType) is InterfaceType and type(rType) is StructType:
+                #     sym = next(filter(lambda x: x[0].name == ast.lhs.name, env['env'][-1]), None)
+                #     t = next(filter(lambda x: x[0].name == rType.name, env['env'][-1]), None)
+                    
+                #     sym[0].mtype = t[0].mtype
+                #     lType = rType
+                elif type(reiType) is ArrayType and type(rType) is ArrayType and type(reiType.eleType) is FloatType and type(rType.eleType) is IntType:
+                    rCode = self.convertArray(lType, rCode, env)
+                    typ = reiType
 
                 res += reiCode + rCode
                 res += self.emit.emitPUTFIELD(f"{reiType.name}.{ast.lhs.field}", typ, env['frame'])
@@ -1078,7 +1183,7 @@ class CodeGenerator(BaseVisitor,Utils):
                 else:
                     if type(lType) is StringType:
                         typ = StringType()
-                        val = StringLiteral(lVal.value + rVal.value)
+                        # val = StringLiteral(lVal.value + rVal.value)
                         res += self.emit.emitNEW(ClassType('java/lang/StringBuilder'), env['frame'])
                         res += self.emit.emitDUP(env['frame'])
                         res += self.emit.emitINVOKESPECIAL(env['frame'], "java/lang/StringBuilder/<init>", MType([], VoidType()))
@@ -1252,8 +1357,6 @@ class CodeGenerator(BaseVisitor,Utils):
             return ast, exprType, None
     
     def visitFuncCall(self, ast, o):
-        self.fetchEnv(ast, o)
-
         if 'frame' in o:
             sym = next(filter(lambda x: x[0].name == ast.funName, o['env'][-1]), None)
 
@@ -1282,11 +1385,33 @@ class CodeGenerator(BaseVisitor,Utils):
             return ast, sym[0].mtype.rettype, None
 
     def visitMethCall(self, ast, o):
-        return None
+        if 'frame' in o:
+            env = o.copy()
+            env['isLeft'] = False
+
+            reiVal, reiType, reiCode = self.visit(ast.receiver, env)
+
+            res = reiCode
+            for i in range(len(ast.args)):
+                val, typ, code = self.visit(ast.args[i], env)
+                res += code
+            
+            sym = next(filter(lambda x: x[0].name == reiType.name, env['env'][-1]), None)[0]
+            method = next(filter(lambda x: x.fun.name == ast.metName, sym.mtype.methods), None)
+            
+            mtype = MType([param.parType for param in method.fun.params], method.fun.retType)
+
+            res += self.emit.emitINVOKEVIRTUAL(f"{reiType.name}/{ast.metName}", mtype, env['frame'])
+
+            if type(method.fun.retType) is VoidType:
+                self.emit.printout(res)
+                return o
+            else:
+                return None, method.fun.retType, res
+        else:
+            return ast, None, None
     
     def visitId(self, ast, o):
-        self.fetchEnv(ast, o)
-        
         sym = next(filter(lambda x: x is not None, [self.lookup(ast.name, env) for env in o['env']]), None)
 
         if type(sym[0].value) is Index:
@@ -1438,7 +1563,7 @@ class CodeGenerator(BaseVisitor,Utils):
                     res += self.visit(values[i], env)[2]
                     res += self.emit.emitASTORE(eleType, frame)
                 
-                return ast, ArrayType(dimens, ast.eleType), res
+                return ast, ArrayType(dimens, eleType), res
             else:
                 env = o.copy()
                 env['isLeft'] = False
@@ -1489,7 +1614,7 @@ class CodeGenerator(BaseVisitor,Utils):
 
                 # res += self.emit.emitPOP(env['frame'])  
 
-                return ast, ArrayType(dimens, ast.eleType), res
+                return ast, ArrayType(dimens, eleType), res
         else:
             dimens = copy.deepcopy(ast.dimens)
             for i in range(len(dimens)):
@@ -1522,7 +1647,7 @@ class CodeGenerator(BaseVisitor,Utils):
                     res += self.emit.emitDUP(env['frame'])
                     eleVal, eleType, eleCode = self.visit(ele[1], env)
                     res += eleCode
-                    res += self.emit.emitPUTFIELD(f"{ast.name}.{ast.elements[i][0]}", eleType, env['frame'])
+                    res += self.emit.emitPUTFIELD(f"{ast.name}.{structElements[i][0]}", eleType, env['frame'])
                 else:
                     res += self.emit.emitDUP(env['frame'])
                     eleVal, eleType, eleCode = self.visit(self.DefaultVal(structElements[i][1], env), env)

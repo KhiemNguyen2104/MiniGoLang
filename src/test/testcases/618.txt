@@ -1,0 +1,9 @@
+
+            const Pi = 3.14
+
+            const Maxsize = (1 + 1.4E2)/34.3*(54 % 4);
+
+            func main() {
+                putFloat(Maxsize)
+            }
+        

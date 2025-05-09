@@ -1,0 +1,13 @@
+
+        var arr [5]float
+
+        func main() {
+            x := 5
+            
+            // Using expression in an array index
+            arr := [5]int{10, 20, 30, 40, 50}
+            value := arr[1 + 2 * (x - 3) / 4]
+            
+            putFloat(value)
+        }
+        

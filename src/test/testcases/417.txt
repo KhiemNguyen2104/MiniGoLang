@@ -1,0 +1,26 @@
+
+            type a struct {
+                hello Hello
+            }
+
+            type Hello struct {
+                hi Hi
+            }
+
+            type Hi struct {
+                Goodbye [6]int
+            }
+            
+            var x = [3]a{a{hello: Hello{hi: Hi{Goodbye: [6]int{1, 2, 3, 4, 5, 6}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{7, 8, 9, 10, 11, 12}}}},
+                         a{hello: Hello{hi: Hi{Goodbye: [6]int{13, 14, 15, 16, 17, 18}}}}}
+
+            func main() {    
+                i := 0
+                for i < 3 {
+                    
+
+                    i += 1
+                }
+            }
+        

@@ -1,0 +1,25 @@
+
+        func testIfStatement(x int) {
+            if (x > 10) {
+                putStringLn("x is greater than 10")
+            } else {
+                putStringLn("x is smaller than or equal to 10")
+            }
+        }
+
+        func Three() int { return 3; }
+
+        var d = 10
+
+        var a = 1 + Three()
+
+        func main() {
+            var arr [3]int = [3]int{4, 7, 11}
+
+            for i := 0; i < Three(); i += 2 {
+                testIfStatement(arr[i])
+            }
+
+            putInt(a)
+        }
+        

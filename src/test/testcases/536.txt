@@ -1,0 +1,24 @@
+
+        func checkEvenOdd(num int) {
+            if (num % 2 == 0) {
+                putStringLn("Even number")
+            } else {
+                putStringLn("Odd number")
+            }
+        }
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        var people = [3]Person{Person{name: "Khiem", age: 21},
+                               Person{name: "Bao", age: 21},
+                               Person{name: "Anh", age: 23}}
+
+        func main() {
+            for var i = 0; i < 3; i += 1 {
+                checkEvenOdd(people[i].age)
+            }
+        }
+        

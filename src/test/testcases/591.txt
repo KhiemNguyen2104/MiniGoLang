@@ -1,0 +1,30 @@
+
+            type Person struct {
+                birth_year int
+            }
+            
+            func foo () {
+                x := (3*7 + 2 - (-1))/8 + 5 % 4;
+                if (x < 10) {
+                    putIntLn(x);
+                } else if (x < 0) {
+                    x += 1;
+                    putInt(x);
+                } else {
+                    putIntLn(10)
+                }
+            }
+
+            func (p Person) cal_age(current_year int) int {
+                return -(p.birth_year - current_year);
+            }
+
+            func main() {
+                p := Person{birth_year: 2004}
+
+                putIntLn(p.cal_age(2025))
+                foo()
+
+                return
+            }
+        

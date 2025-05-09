@@ -1,0 +1,41 @@
+
+            /*
+            type Shape interface {
+                Circum(a int) int;
+                Area() float;
+            }*/
+
+            type Rectangle struct {
+                length int;
+                width int;
+            }
+
+            func (r Rectangle) Circum(a int) int {
+                return (r.length + r.width) * 2;
+            }
+
+            func (r Rectangle) Area() float {
+                return r.length * r.width * 1.0
+            }
+
+            func main() {
+                recs := [3]Rectangle{
+                    Rectangle{length: 0B1010, width: 20},
+                    Rectangle{length: 0b101, width: 0X1},
+                    Rectangle{length: 4, width: 3}}
+
+                var i int;                    
+
+                for i := 0; i < 3; i += 1 {
+                    putString("Check the rectangle ")
+                    putIntLn(i)
+                    var cir = recs[i].Circum(1)
+                    if (cir > 5) {
+                        putString("Area: ")
+                        putFloatLn(recs[i].Area())
+                    } else {
+                        putStringLn("It is so small!")
+                    }
+                }
+            }
+        

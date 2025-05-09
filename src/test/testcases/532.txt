@@ -1,0 +1,9 @@
+
+        func greet() {
+            putStringLn("Hello, world!")
+        }
+
+        func main() {
+            greet()
+        }
+        

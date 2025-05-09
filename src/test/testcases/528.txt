@@ -1,0 +1,52 @@
+
+            type Cache struct {
+                data [3]string;
+                timestamp [3]int;
+                size int;
+                capacity int;
+            }
+            
+            func (c Cache) get(key int) string {
+                if (key >= 0 && key < c.size && c.timestamp[key] > 0) {
+                    c.timestamp[key] := getCurrentTime()
+                    return c.data[key]
+                }
+                return ""
+            }
+            
+            func (c Cache) put(key int, value string) {
+                if (key >= 0 && key < c.capacity) {
+                    c.data[key] := value
+                    c.timestamp[key] := getCurrentTime()
+                    if (key >= c.size) {
+                        c.size := key + 1
+                    }
+                    return 
+                }
+                return 
+            }
+
+            func (c Cache) clear() {
+                for i := 0; i < c.capacity; i += 1 {
+                    c.data[i] := ""
+                    c.timestamp[i] := 0
+                }
+                c.size := 0
+            }
+
+            func getCurrentTime() int {
+                return 12
+            }
+
+            func main() {
+                var c Cache
+                c := Cache{size: 0, capacity: 100}
+                c.data := [3]string{"1", "2", "3"}
+                c.timestamp := [3]int{-1, -1, -1}
+
+                c.put(1, "value1")
+                c.put(2, "value2")
+                putStringLn(c.get(1))
+                putStringLn(c.get(2))
+            }
+        
